@@ -1,9 +1,10 @@
 #!perl
 
+# Perl version of the PLPLOT C x01c.c example
+
 use strict;
 use Test::More tests => 1;
 use Math::Trig qw/ pi /;
-use Data::Dumper;
 require_ok("Graphics::PLPLOT");
 
 print "# Version: ". &Graphics::PLPLOT::plgver() ."\n";
@@ -140,11 +141,7 @@ sub plot3 {
   my @x = map { 3.6 * $_ } (0..100);
   my @y = map { sin ($_ * pi / 180.0) } @x;
 
-  use Data::Dumper;
-  print Dumper(\@x, \@y);
-
   Graphics::PLPLOT::plcol0 (4);
   Graphics::PLPLOT::plline (\@x, \@y);
-
 
 }
