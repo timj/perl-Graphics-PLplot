@@ -931,11 +931,31 @@ c_plstyl( mark, space )
 
 
 void
+c_plsxax( digimax, digits )
+  PLINT digimax
+  PLINT digits
+
+
+void
 c_plsyax( digimax, digits )
   PLINT digimax
   PLINT digits
 
-# plpoin
+void
+c_plsvpa(xmin, xmax, ymin, ymax)
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
+
+
+void
+c_plszax( digimax, digits )
+  PLINT digimax
+  PLINT digits
+
+
+# plsym
 
 void
 c_plsym( x, y, code )
@@ -948,11 +968,20 @@ c_plsym( x, y, code )
   c_plsym( len, x, y, code);
 
 void
-c_plsvpa(xmin, xmax, ymin, ymax)
+c_pltext()
+
+void
+c_plvasp(aspect)
+  PLFLT aspect
+
+void
+c_plvpas(xmin, xmax, ymin, ymax,aspect)
   PLFLT xmin
   PLFLT xmax
   PLFLT ymin
   PLFLT ymax
+  PLFLT aspect
+
 
 void
 c_plvpor( xmin, xmax, ymin, ymax )
@@ -965,6 +994,20 @@ void
 c_plvsta()
 
 void
+c_plw3d(basex,basey,height,xmin,xmax,ymin,ymax,zmin,zmax,alt,az )
+  PLFLT basex
+  PLFLT basey
+  PLFLT height
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
+  PLFLT zmin
+  PLFLT zmax
+  PLFLT alt
+  PLFLT az
+
+void
 c_plwid( width )
   PLINT width
 
@@ -974,3 +1017,14 @@ c_plwind( xmin, xmax, ymin, ymax )
   PLFLT xmax
   PLFLT ymin
   PLFLT ymax
+
+bool
+c_plxormod( mode )
+  bool mode
+ PREINIT:
+  PLINT status;
+ CODE:
+  c_plxormod( (PLINT)mode, &status);
+  RETVAL = status;
+ OUTPUT:
+  RETVAL

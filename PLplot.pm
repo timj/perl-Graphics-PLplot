@@ -34,7 +34,7 @@ to the C interface except that:
 =cut
 
 use vars qw/ $VERSION %EXPORT_TAGS /;
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 require DynaLoader;
 require Exporter;
@@ -141,13 +141,20 @@ use base qw/ Exporter DynaLoader /;
 			   plstripa
 			   plstripc
 			   plstyl
+			   plsvpa
+			   plsxax
 			   plsyax
 			   plsym
-			   plsvpa
+			   plszax
+			   pltext
+			   plvasp
+			   plvpas
 			   plvpor
 			   plvsta
+			   plw3d
 			   plwid
 			   plwind
+			   plxormod
 			   /],
 	       );
 
