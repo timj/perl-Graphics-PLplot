@@ -759,7 +759,7 @@ c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
   PLFLT * coord3
   PLINT * rev
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT len = av_len( (AV*)SvRV(ST(1)) ) + 1;
  CODE:
   c_plscmap1l( itype, len, pos, coord1, coord2, coord3, rev);
 
