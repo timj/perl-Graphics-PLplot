@@ -1,6 +1,7 @@
 PLINT		T_IV
 PLFLT		T_NV
 PLFLT *	 	T_FLTARRAY
+PLFLT2D *	T_FLT2DARR
 PLINT *		T_INTARRAY
 char **		T_PACK1DCHAR
 PLSTRIPID       T_STRIPINT
@@ -11,6 +12,8 @@ T_FLTARRAY
 	$var = ($type)pack1D($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'));
 T_INTARRAY
 	$var = ($type)pack1D($arg,'i')
+T_FLT2DARR
+	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
 T_PACK1DCHAR
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV)
 	    $var = pack1Dchar((AV*)SvRV($arg));

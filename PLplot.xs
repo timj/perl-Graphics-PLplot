@@ -36,6 +36,9 @@ extern "C" {
 /* Use typedef for StripChart ID */
 typedef PLINT PLSTRIPID;
 
+/* For 2D perl arrays */
+typedef PLFLT PLFLT2D;
+
 /* Helper routine for packing string arrays */
 
 char ** pack1Dchar( AV * avref ) {
@@ -523,6 +526,44 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
 
 
 # plhls is now deprecated
+
+# plimage - takes 2D perl array [see PGPLOT::pgimag]
+# You should be using PDL instead
+#  Currently do not determine nx and ny from data
+
+void
+c_plimage( pdata, nx, ny, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax)
+  PLFLT2D * pdata
+  PLINT nx
+  PLINT ny
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
+  PLFLT zmin
+  PLFLT zmax
+  PLFLT Dxmin
+  PLFLT Dxmax
+  PLFLT Dymin
+  PLFLT Dymax
+ PREINIT:
+  PLFLT ** data;
+  int i;
+  int j;
+  int k = 0;
+ CODE:
+  /* this is incredibly inefficient since we go from a 2D perl array
+     to some C memory to some more C memory. Needs tidying up a lot.
+     May as well just support a serialised 1D perl array */
+  plAlloc2dGrid(&data, nx, ny);
+  for (i = 0; i < nx; i++) {
+    for (j = 0; j < ny; j++) {
+      data[i][j] = pdata[k];
+      k++;
+    }
+  }
+  plimage( data, nx, ny, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax);
+  plFree2dGrid(data,nx,ny);
 
 
 # plinit
