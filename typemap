@@ -1,0 +1,13 @@
+PLINT		T_IV
+PLFLT		T_NV
+PLFLT *	 	T_FLTARRAY
+PLINT *		T_INTARRAY
+
+INPUT
+
+T_FLTARRAY
+	$var = ($type)pack1D($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'));
+T_INTARRAY
+	$var = ($type)pack1D($arg,'i')
+
+
