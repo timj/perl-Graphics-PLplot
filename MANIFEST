@@ -1,0 +1,13 @@
+MANIFEST
+README
+Makefile.PL
+PLPLOT.pm
+PLPLOT.xs
+typemap
+arrays.c
+arrays.xs
+t/x01.t
+t/x02.t
+t/x03.t
+t/x04.t
+t/x05.t
