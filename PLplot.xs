@@ -32,6 +32,9 @@ extern "C" {
 
 #include "plplot/plplot.h"
 #include "arrays.h"
+char ** pack1Dchar( AV * );
+char ** pack1Dchar_sz( AV * , int * );
+AV * unpack1Dchar(char **, int );
 
 /* Use typedef for StripChart ID */
 typedef PLINT PLSTRIPID;
@@ -39,9 +42,21 @@ typedef PLINT PLSTRIPID;
 /* For 2D perl arrays */
 typedef PLFLT PLFLT2D;
 
+/* Some static storage for the options handling. Since we only need one set of
+   options at a time. Just allocate some memory. If we dynamically allocate
+   may need to worry about when to free this. */
+#define MAX_OPT_TAB   64
+static PLOptionTable options[MAX_OPT_TAB];
+
+
 /* Helper routine for packing string arrays */
 
 char ** pack1Dchar( AV * avref ) {
+  int nelem;
+  return pack1Dchar_sz( avref, &nelem );
+}
+
+char ** pack1Dchar_sz( AV * avref, int * nelem ) {
   int i;
   SV ** elem;
   char ** outarr;
@@ -57,10 +72,14 @@ char ** pack1Dchar( AV * avref ) {
     elem = av_fetch( avref, i, 0);
     if (elem == NULL ) {
       /* undef */
+      char * temp = get_mortalspace(1,'c');
+      temp = "\0";
+      outarr[i] = temp;
     } else {
       outarr[i] = SvPV( *elem, linelen);
     }
   }
+  if (nelem != NULL) *nelem = len;
   return outarr;
 }
 
@@ -944,6 +963,8 @@ c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, 
   char * labx
   char * laby
   char * labtop
+ PREINIT:
+  int legline_size;
  CODE:
    c_plstripc( &RETVAL, xspec, yspec, xmin, xmax, xjump, ymin, ymax, xlpos, ylpos, (PLINT)y_ascl, (PLINT)acc, colbox, collab, colline, styline, legline, labx, laby, labtop);
  OUTPUT:
@@ -1139,8 +1160,109 @@ plClearOpts()
 void
 plResetOpts()
 
-#int
-#plMergeOpts()
+
+# Returns status and all the unprocessed contents of @ARGV in ref to array
+# Automatically shift $0 onto the front of the array.
+
+void
+plParseOpts( argv, mode )
+  char ** argv
+  PLINT mode
+ PREINIT:
+  int argv_size;
+  int status;
+  AV* inarr;
+ PPCODE:
+  /* $ARGV[0] is not the program name in perl */
+  status = plParseOpts( &argv_size, argv, mode | PL_PARSE_NOPROGRAM );
+  XPUSHs( sv_2mortal(newSViv(status) ));  
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( argv, argv_size) ));
+
+
+# Takes hash list containing new options
+#  keys: opt, var, mode, syntax and desc
+# Put $name as leading argument. @notes might be a problem since
+# we do not want to free this memory. Interface may change.
+
+bool
+plMergeOpts( name, ... )
+  char * name
+ PREINIT:
+  PLOptionTable * opt;
+  int i;
+  int nopts;
+  int argoff = 1;
+  SV ** elem;
+  HV * hash;
+  int len;
+ CODE:
+  /* Check that we have enough space */
+  nopts = items - argoff; 
+  if (nopts > (MAX_OPT_TAB - 1) ) 
+    Perl_croak(aTHX_ "Can only support %d additional options, you asked for %d",
+	MAX_OPT_TAB, nopts);  
+
+  opt = options;
+
+  /* Loop over all the items in turn, populating the struct */
+  for ( i = 0; i < nopts; i++ ) {
+    int pos = argoff + i;
+    SV * arg = ST(argoff);
+
+    /* Reset everything */
+    opt->handler     = NULL;
+    opt->client_data = NULL;
+    opt->var         = NULL;
+    opt->mode        = 0;
+    opt->syntax      = NULL;
+    opt->desc        = NULL;
+
+    if (SvROK(arg) && SvTYPE(SvRV(arg))==SVt_PVHV) {
+
+       hash = (HV*) SvRV(arg);
+       elem = hv_fetch(hash,"mode",strlen("mode"),0);
+       if (elem != NULL ) opt->mode = SvIV( *elem );
+
+       elem = hv_fetch(hash,"opt",strlen("opt"),0);
+       if (elem != NULL ) opt->opt = SvPV_nolen( *elem );
+
+       elem = hv_fetch(hash,"desc",strlen("desc"),0);
+       if (elem != NULL ) opt->desc = SvPV_nolen( *elem );
+
+       elem = hv_fetch(hash,"syntax",strlen("syntax"),0);
+       if (elem != NULL ) opt->syntax = SvPV_nolen( *elem );
+
+	printf("Desc %s\n",opt->desc);
+
+    } else {
+       Perl_croak(aTHX_ "Options must be given as ref to hash");
+    }
+
+    /* Next slot */
+    opt++;
+  }
+  /* Terminate the structure */
+  opt->handler     = NULL;
+  opt->client_data = NULL;
+  opt->var         = NULL;
+  opt->mode        = 0;
+  opt->syntax      = NULL;
+  opt->desc        = NULL;
+
+  /* Store the options */
+  RETVAL = plMergeOpts( options, name, NULL );
+
+
+  /* 0 is good status and 1 is bad status so we need to convert to Perl good/bad */
+  if (RETVAL == 0 )  {
+    RETVAL = 1;
+  } else {
+    RETVAL = 0;
+  }
+ OUTPUT:
+  RETVAL
+
+
 
 void
 plSetUsage( program_string, usage_string )
@@ -1229,3 +1351,58 @@ plP_checkdriverinit(list)
 PLFLT
 plstrl( string )
   char * string
+
+
+MODULE = Graphics::PLplot  PACKAGE = Graphics::PLplot PREFIX = PL_
+
+int
+PL_PARSE_FULL()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_FULL;
+ OUTPUT:
+  RETVAL
+
+int
+PL_PARSE_QUIET()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_QUIET;
+ OUTPUT:
+  RETVAL
+
+int
+PL_PARSE_NODELETE()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_NODELETE;
+ OUTPUT:
+  RETVAL
+
+int
+PL_PARSE_SHOWALL()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_SHOWALL;
+ OUTPUT:
+  RETVAL
+
+int
+PL_PARSE_NODASH()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_NODASH;
+ OUTPUT:
+  RETVAL
+
+int
+PL_PARSE_SKIP()
+ PROTOTYPE:
+ CODE:
+  RETVAL = PL_PARSE_SKIP;
+ OUTPUT:
+  RETVAL
+
+
+
+
