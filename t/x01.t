@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plssub( 2, 2);
@@ -46,7 +46,8 @@ print "# Plot 3\n";
 print "# Plot 4\n";
 &plot3();
 
-
+sleep($sleep);
+plspause(0);
 plend();
 
 print "# Ending \n";

@@ -55,7 +55,7 @@ for my $i (0..50) {
   $strip->plstripa( 1, $x, (1.5 + rand(0.5)));
   $strip->plstripa( 2, $x, (2.0 + rand(0.5)));
   $strip->plstripa( 3, $x, (3.5 + rand(0.5)));
-  select(undef,undef,undef,0.25);
+  select(undef,undef,undef,0.05);
 
 }
 

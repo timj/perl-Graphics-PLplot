@@ -26,7 +26,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
@@ -80,6 +80,10 @@ plcol0(3);
 plline(\@x, \@y);
 plcol0(4);
 plmtex("t",2,0.5,0.5,"#frPLplot Example 3 - r(#gh)=sin 5#gh");
+
+plflush();
+sleep($sleep);
+plspause(0);
 
 plend();
 

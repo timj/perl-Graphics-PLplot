@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 0.2;
 print "# Version: ". &plgver() ."\n";
 
 # Starting points for symbol lookup
@@ -36,6 +36,7 @@ my @base = ( 0, 200, 500, 600, 700, 800, 900,
 plsdev( "xwin" );
 plinit();
 plfontld(1);
+plspause(0);
 
 for my $base (@base) {
 
@@ -74,6 +75,8 @@ for my $base (@base) {
   }
 
   plmtex("t",1.5,0.5,0.5, "PLplot Example 7 - PLSYM symbols");
+  plflush();
+  select undef,undef,undef,$sleep;
 }
 plend();
 

@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
@@ -66,6 +66,9 @@ OUTER: for my $i ( 0..12) {
 
 plmtex("t",1.5,0.5,0.5, "PLplot Example 6 - plpoin symbols");
 
+plspause(0);
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";

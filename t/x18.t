@@ -26,7 +26,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 0.5;
 print "# Version: ". &plgver() ."\n";
 
 # Setup input
@@ -41,8 +41,8 @@ plsdev( $dev );
 is(plgdev, $dev, "Check device");
 
 plinit();
-
-for (0..3) { test_poly($_); }
+plspause(0);
+for (0..3) { test_poly($_); plflush(); select undef,undef,undef,$sleep;}
 
 # other test
 my (@x,@y,@z);
@@ -79,7 +79,8 @@ for my $k ( 0..3 ) {
   my $title = sprintf("#frPLplot Example 18 - Alt=%.0f, Az=%.0f",
 		      $alt[$k], $az[$k]);
   plmtex("t", 1.0, 0.5, 0.5, $title);
-
+  plflush();
+  select undef,undef,undef,$sleep;
 }
 
 

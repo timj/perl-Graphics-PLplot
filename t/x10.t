@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
@@ -42,6 +42,9 @@ plwind(0,1,0,1);
 plbox("bc",0,0,"bc",0,0);
 plptex(0.5,0.5,1,0,0.5,"BOX at (50,150,50,100)");
 
+plspause(0);
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";

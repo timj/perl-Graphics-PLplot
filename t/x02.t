@@ -27,7 +27,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". plgver() ."\n";
 
 # 16 regions
@@ -60,7 +60,9 @@ for ( my $i = 0; $i <= 15 ; $i ++ ) {
   plptex( 0.5, 0.5, 1.0, 0.0, 0.5, $text );
 }
 
-
+plflush();
+sleep($sleep);
+plspause(0);
 plend();
 
 print "# Ending \n";

@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 my @text = qw/ Maurice Geoffrey Alan Rafael Vince /;
@@ -86,7 +86,9 @@ plfont(2);
 plschr(0., 1.3);
 plptex(5.0, 9.0, 1.0, 0.0, 0.5, "Percentage of Sales");
 
-
+plspause(0);
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";

@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
@@ -49,7 +49,9 @@ for my $i (0..9) {
   plmtex("b",1,(($i+1) * 0.1 - 0.05), 0.5, (1980+$i));
 
 }
-
+plspause(0);
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";

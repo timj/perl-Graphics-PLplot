@@ -25,7 +25,7 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
@@ -42,7 +42,9 @@ plcol0(2);
 pllab("#frValue", "#frFrequency",
           "#frPLplot Example 5 - Probability function of Oscillator");
 
-
+plspause(0);
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";

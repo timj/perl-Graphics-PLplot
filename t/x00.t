@@ -30,6 +30,8 @@ $vers =~ s/\.\d+$//;  # throw away patch level
 print "# Version: ".plgver()."\n";
 ok(($vers > 0 && $vers < 100), "Check version number");
 
+plSetUsage( $0, "$0");
+my ($status, $unprocessed) = plParseOpts(\@ARGV, PARSE_QUIET);
 
 # Set device name and verify it was set
 my $driver = "psc";

@@ -27,16 +27,20 @@ BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
 }
-
+my $sleep = 2;
 print "# Version: ". &plgver() ."\n";
 
 plsdev( "xwin" );
 plinit();
 plfont(2);
 
+plspause(0);
 &plot1( 0 );
+plflush();
+sleep($sleep);
 &plot1( 1 );
-
+plflush();
+sleep($sleep);
 plend();
 
 print "# Ending \n";
