@@ -30,6 +30,7 @@ extern "C" {
 }
 #endif
 
+#include "plplot/plplotP.h"
 #include "plplot/plplot.h"
 #include "arrays.h"
 char ** pack1Dchar( AV * );
@@ -132,11 +133,8 @@ c_plbin( x, y, center )
   PLFLT * x
   PLFLT * y
   PLINT center
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
  CODE:
-  c_plbin( x_size, x, y, center);
+  c_plbin( ix_x, x, y, center);
 
 void
 c_plbop()
@@ -246,12 +244,8 @@ c_plerrx( xmin, xmax, y )
   PLFLT * xmin
   PLFLT * xmax
   PLFLT * y
- PREINIT:
-  PLINT xmin_size;
-  PLINT xmax_size;
-  PLINT y_size;
  CODE:
-  c_plerrx( y_size, xmin, xmax, y );
+  c_plerrx( ix_y, xmin, xmax, y );
 
 
 void
@@ -259,12 +253,8 @@ c_plerry( x, ymin, ymax )
   PLFLT * x
   PLFLT * ymin
   PLFLT * ymax
- PREINIT:
-  PLINT x_size;
-  PLINT ymin_size;
-  PLINT ymax_size;
  CODE:
-  c_plerry( x_size, x, ymin, ymax );
+  c_plerry( ix_x, x, ymin, ymax );
 
 void
 c_plfamadv()
@@ -273,23 +263,16 @@ void
 c_plfill( x, y )
   PLFLT * x
   PLFLT * y
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
  CODE:
-  c_plfill( x_size, x, y );
+  c_plfill( ix_x, x, y );
 
 void
 c_plfill3( x, y, z )
   PLFLT * x
   PLFLT * y
   PLFLT * z
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
-  PLINT z_size;
  CODE:
-  c_plfill3( x_size, x, y, z );
+  c_plfill3( ix_x, x, y, z );
 
 
 # plflush
@@ -556,10 +539,8 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
   PLFLT datmax
   PLINT nbin
   PLINT oldwin
- PREINIT:
-  PLINT data_size;
  CODE:
-  c_plhist( data_size, data, datmin, datmax, nbin, oldwin);
+  c_plhist( ix_data, data, datmin, datmax, nbin, oldwin);
 
 
 # plhls is now deprecated
@@ -636,23 +617,16 @@ void
 c_plline( x, y )
   PLFLT * x
   PLFLT * y
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
  CODE:
-  c_plline( x_size, x, y );
+  c_plline( ix_x, x, y );
 
 void
 c_plline3( x, y, z )
   PLFLT * x
   PLFLT * y
   PLFLT * z
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
-  PLINT z_size;
  CODE:
-  c_plline3( x_size, x, y, z );
+  c_plline3( ix_x, x, y, z );
 
 void
 c_pllsty( input )
@@ -690,11 +664,8 @@ void
 c_plpat( inc, del )
   PLINT * inc
   PLINT * del
- PREINIT:
-  PLINT inc_size;
-  PLINT del_size;
  CODE:
-  c_plpat( inc_size, inc, del);
+  c_plpat( ix_inc, inc, del);
 
 
 
@@ -705,11 +676,8 @@ c_plpoin( x, y, code )
   PLFLT * x
   PLFLT * y
   PLINT code
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
  CODE:
-  c_plpoin( x_size, x, y, code);
+  c_plpoin( ix_x, x, y, code);
 
 void
 c_plpoin3( x, y, z, code )
@@ -717,12 +685,8 @@ c_plpoin3( x, y, z, code )
   PLFLT * y
   PLFLT * z
   PLINT code
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
-  PLINT z_size;
  CODE:
-  c_plpoin3( x_size, x, y, z, code);
+  c_plpoin3( ix_x, x, y, z, code);
 
 void
 c_plpoly3( x, y, z, draw, ifcc )
@@ -731,13 +695,8 @@ c_plpoly3( x, y, z, draw, ifcc )
   PLFLT * z
   PLINT * draw
   PLINT ifcc
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
-  PLINT z_size;
-  PLINT draw_size;
  CODE:
-  c_plpoly3( x_size, x, y, z, draw, ifcc);
+  c_plpoly3( ix_x, x, y, z, draw, ifcc);
 
 void
 c_plprec( set, prec )
@@ -776,12 +735,8 @@ c_plscmap0( r, g, b )
   PLINT * r
   PLINT * g
   PLINT * b
- PREINIT:
-  PLINT r_size;
-  PLINT g_size;
-  PLINT b_size;
  CODE:
-  c_plscmap0( r, g, b, r_size );
+  c_plscmap0( r, g, b, ix_r );
 
 void
 c_plscmap0n( ncol0 )
@@ -792,12 +747,8 @@ c_plscmap1( r, g, b )
   PLINT * r
   PLINT * g
   PLINT * b
- PREINIT:
-  PLINT r_size;
-  PLINT g_size;
-  PLINT b_size;
  CODE:
-  c_plscmap1( r, g, b, r_size );
+  c_plscmap1( r, g, b, ix_r );
 
 # plscmap1l - need to allow rev to be an empty array. XXXXX
 
@@ -809,14 +760,8 @@ c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
   PLFLT * coord2
   PLFLT * coord3
   PLINT * rev
- PREINIT:
-  PLINT pos_size;
-  PLINT coord1_size;
-  PLINT coord2_size;
-  PLINT coord3_size;
-  PLINT rev_size;
  CODE:
-  c_plscmap1l( itype, pos_size, pos, coord1, coord2, coord3, rev);
+  c_plscmap1l( itype, ix_pos, pos, coord1, coord2, coord3, rev);
 
 
 void
@@ -983,10 +928,6 @@ c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, 
   char * labx
   char * laby
   char * labtop
- PREINIT:
-  PLINT colline_size;
-  PLINT styline_size;
-  PLINT legline_size;
  CODE:
    c_plstripc( &RETVAL, xspec, yspec, xmin, xmax, xjump, ymin, ymax, xlpos, ylpos, (PLINT)y_ascl, (PLINT)acc, colbox, collab, colline, styline, legline, labx, laby, labtop);
  OUTPUT:
@@ -1024,11 +965,8 @@ void
 c_plstyl( mark, space )
   PLINT * mark
   PLINT * space
- PREINIT:
-  PLINT mark_size;
-  PLINT space_size;
  CODE:
-  c_plstyl( mark_size, mark, space );
+  c_plstyl( ix_mark, mark, space );
 
 
 void
@@ -1063,11 +1001,8 @@ c_plsym( x, y, code )
   PLFLT * x
   PLFLT * y
   PLINT code
- PREINIT:
-  PLINT x_size;
-  PLINT y_size;
  CODE:
-  c_plsym( x_size, x, y, code);
+  c_plsym( ix_x, x, y, code);
 
 void
 c_pltext()
@@ -1186,21 +1121,18 @@ plResetOpts()
 
 
 # Returns status and all the unprocessed contents of @ARGV in ref to array
-# Automatically shift $0 onto the front of the array.
 
 void
 plParseOpts( argv, mode )
   char ** argv
   PLINT mode
  PREINIT:
-  int argv_size;
   int status;
-  AV* inarr;
  PPCODE:
   /* $ARGV[0] is not the program name in perl */
-  status = plParseOpts( &argv_size, argv, mode | PL_PARSE_NOPROGRAM );
+  status = plParseOpts( &ix_argv, argv, mode | PL_PARSE_NOPROGRAM );
   XPUSHs( sv_2mortal(newSViv(status) ));  
-  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( argv, argv_size) ));
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( argv, ix_argv) ));
 
 
 # plMergeOpts should be done by perl GetOpt::Long

@@ -19,6 +19,7 @@ Apr 97: Add support for unsigned char and shorts- timj@jach.hawaii.edu
 Mar 04: Add 'v' type (for pointer arrays)       - timj@jach.hawaii.edu
         Add _sz variants that return the number
         of elements processed by packXD.
+        -Wall clean
    
 */
 
@@ -79,13 +80,18 @@ pack1D_sz() is the same as pack1D except a pointer to an int
    Will be set to -1 if this function was called with something
    other than an array (eg a PDL).
 
-   Note that to use this from a typemap you will need to fudge things
-   in the typemap file such that xsubpp puts the entry after the PREINIT
-   block (else you can't declare the _size variables.
+   Note that to use this from a typemap you will need to declare the
+   size variables your self. A reasonable convention is to adopt the
+   ix_$var convention for number of elements as used in the standard
+   T_ARRAY typemap entry.
+
 
 T_PACKEDINT
-    if (1)
-      $var = ($type)pack1D($arg,'d',${var}_size)
+      U32 ix_$var;
+      $var = ($type)pack1D($arg,'d',ix_$var)
+
+   Although this may cause problems with your compiler if you have more than
+   one array in your argument list.
 
 */
 
@@ -115,7 +121,7 @@ void* pack1D_sz( SV* arg, char packtype, int * nelem) {
    
    if (packtype!='f' && packtype!='i' && packtype!='d' && packtype!='s'
        && packtype != 'u')
-       croak("Programming error: invalid type conversion specified to pack1D");
+       Perl_croak(aTHX_ "Programming error: invalid type conversion specified to pack1D");
    
    /* 
       Create a work char variable - be cunning and make it a mortal *SV
@@ -223,7 +229,7 @@ void* pack1D_sz( SV* arg, char packtype, int * nelem) {
    
    errexit:
    
-   croak("Routine can only handle scalar values or refs to 1D arrays of scalars");
+   Perl_croak(aTHX_ "Routine can only handle scalar values or refs to 1D arrays of scalars");
 
 }
 
@@ -281,11 +287,11 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
    double dscalar;
    unsigned char uscalar;
    AV* array;
-   AV* array2;
+   AV* array2 = Nullav;
    I32 i,j,n,m;
    SV* work;
    SV** work2;
-   double nval;
+   double nval = 0.0;
    int isref;
    STRLEN len;
 
@@ -531,9 +537,7 @@ void pack_element(SV* work, SV** arg, char packtype) {
       return;
    }
    
-   errexit:
-   
-   croak("Routine can only handle scalars or refs to N-D arrays of scalars");
+   Perl_croak(aTHX_ "Routine can only handle scalars or refs to N-D arrays of scalars");
    
 }
 
@@ -556,13 +560,11 @@ void unpack1D ( SV* arg, void * var, char packtype, int n ) {
    /* n is the size of array var[] (n=1 for 1 element, etc.) If n=0 take
       var[] as having the same dimension as array referenced by arg */
    
-   int* ivar;
-   float* fvar;
-   double* dvar;
-   short* svar;
-   unsigned char* uvar;
-   double foo;
-   SV* work;
+   int* ivar = NULL;
+   float* fvar = NULL;
+   double* dvar = NULL;
+   short* svar = NULL;
+   unsigned char* uvar = NULL;
    AV* array;
    I32 i,m;
 
@@ -573,7 +575,7 @@ void unpack1D ( SV* arg, void * var, char packtype, int n ) {
 
    if (packtype!='f' && packtype!='i' && packtype!= 'd' &&
        packtype!='u' && packtype!='s')
-       croak("Programming error: invalid type conversion specified to unpack1D");
+       Perl_croak(aTHX_ "Programming error: invalid type conversion specified to unpack1D");
    
    m=n;  array = coerce1D( arg, m );   /* Get array ref and coerce */
    
@@ -671,7 +673,7 @@ void* get_mortalspace( int n, char packtype ) {
    
    if (packtype!='f' && packtype!='i' && packtype!='d'
        && packtype!='u' && packtype!='s' && packtype!='v')
-     croak("Programming error: invalid type conversion specified to get_mortalspace");
+     Perl_croak(aTHX_ "Programming error: invalid type conversion specified to get_mortalspace");
 
    work = sv_2mortal(newSVpv("", 0));
    

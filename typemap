@@ -9,16 +9,17 @@ PLSTRIPID       T_STRIPINT
 INPUT
 
 T_FLTARRAY
-	if (1)
-	$var = ($type)pack1D_sz($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'),&${var}_size);
+	PLINT ix_$var;
+	$var = ($type)pack1D_sz($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'),&ix_$var);
 T_INTARRAY
-	if (1)
-	$var = ($type)pack1D_sz($arg,'i',&${var}_size);
+	PLINT ix_$var;
+	$var = ($type)pack1D_sz($arg,'i',&ix_$var);
 T_FLT2DARR
 	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
 T_1DCHARARR
+        PLINT ix_$var;
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV)
-	    $var = pack1Dchar_sz((AV*)SvRV($arg),&${var}_size);
+	    $var = pack1Dchar_sz((AV*)SvRV($arg),&ix_$var);
 	else
 	    Perl_croak(aTHX_ \"$var is not an array reference\")
 T_STRIPINT
