@@ -1,6 +1,6 @@
 #!perl
 
-# Perl version of the PLPLOT C x04c.c example [log plot]
+# Perl version of the PLplot C x04c.c example [log plot]
 
 #
 # This version Copyright (C) 2004 Tim Jenness. All Rights Reserved.
@@ -24,8 +24,8 @@ use Test::More tests => 1;
 use Math::Trig qw/ pi /;
 use POSIX qw/ log10 /;
 BEGIN {
-  use_ok("Graphics::PLPLOT");
-  Graphics::PLPLOT->import(qw/ :all /);
+  use_ok("Graphics::PLplot");
+  Graphics::PLplot->import(qw/ :all /);
 }
 
 print "# Version: ". &plgver() ."\n";

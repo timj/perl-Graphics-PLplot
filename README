@@ -1,27 +1,27 @@
-Graphics::PLPLOT
+Graphics::PLplot
 ================
 
-This module provides a wrapper around the C PLPLOT graphics library.
-The PLPLOT library can be obtained from http://www.plplot.org.
+This module provides a wrapper around the C PLplot graphics library.
+The PLplot library can be obtained from http://www.plplot.org.
 
-This module should not be confused with the PDL::Graphics::PLPLOT
+This module should not be confused with the PDL::Graphics::PLplot
 module written by Doug Hunt and distributed as part of PDL. If you 
 have large data arrays to plot you should be using the PDL version.
 
 If you have small data arrays and/or do not want a dependency on
 PDL, this module is for you.
 
-This software is currently in Alpha state since only a subset of the PLPLOT
+This software is currently in Alpha state since only a subset of the PLplot
 functions are currently supported. More will be added as I need them.
 
 
 Requirements
 ------------
 
-C PLPLOT bindings from http://www.plplot.org. A C compiler is required
+C PLplot bindings from http://www.plplot.org. A C compiler is required
 to build this module.
 
-Tested with PLPLOT v5.3.0 on Linux and Mac OS X
+Tested with PLplot v5.3.0 on Linux and Mac OS X
 Should work with Perl >= v5.005
 
 Building
@@ -33,7 +33,7 @@ Building
   make install
 
 The tests include Perl versions of some of the C example code
-distributed with PLPLOT itself.
+distributed with PLplot itself.
 
 Author
 ------
@@ -67,3 +67,4 @@ Changes
 
  v0.01 - initial test release to CPAN
 
+ v0.02 - Add many new [easy] functions. Rename to Graphics::PLplot

@@ -1,6 +1,6 @@
 #!perl
 
-# Perl version of the PLPLOT C x13c.c Pie Chart demo
+# Perl version of the PLplot C x13c.c Pie Chart demo
 #
 # This version Copyright (C) 2004 Tim Jenness. All Rights Reserved.
 #
@@ -22,8 +22,8 @@ use strict;
 use Test::More tests => 2;
 use Math::Trig qw/ pi /;
 BEGIN {
-  use_ok("Graphics::PLPLOT");
-  Graphics::PLPLOT->import(qw/ :all /);
+  use_ok("Graphics::PLplot");
+  Graphics::PLplot->import(qw/ :all /);
 }
 
 print "# Version: ". &plgver() ."\n";

@@ -1,6 +1,6 @@
 /*
 
-  PLPLOT.xs
+  PLplot.xs
 
   Copyright (C) 2004 Tim Jenness. All Rights Reserved.
  
@@ -33,7 +33,7 @@ extern "C" {
 #include "plplot/plplot.h"
 #include "arrays.h"
 
-MODULE = Graphics::PLPLOT     PACKAGE = Graphics::PLPLOT PREFIX = c_
+MODULE = Graphics::PLplot     PACKAGE = Graphics::PLplot PREFIX = c_
 
 
 void

@@ -1,8 +1,8 @@
 MANIFEST
 README
 Makefile.PL
-PLPLOT.pm
-PLPLOT.xs
+PLplot.pm
+PLplot.xs
 typemap
 arrays.c
 arrays.h

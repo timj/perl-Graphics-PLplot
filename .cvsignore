@@ -1,5 +1,5 @@
 Makefile
 *.bs
-PLPLOT.c
+PLplot.c
 blib
 pm_to_blib

@@ -1,6 +1,6 @@
 #!perl
 
-# Perl version of the PLPLOT C x02c.c example [colored text]
+# Perl version of the PLplot C x02c.c example [colored text]
 
 #
 # This version Copyright (C) 2004 Tim Jenness. All Rights Reserved.
@@ -24,8 +24,8 @@ use Test::More tests => 1;
 use Math::Trig qw/ pi /;
 use Data::Dumper;
 BEGIN {
-  use_ok("Graphics::PLPLOT");
-  Graphics::PLPLOT->import(qw/ :all /);
+  use_ok("Graphics::PLplot");
+  Graphics::PLplot->import(qw/ :all /);
 }
 
 print "# Version: ". plgver() ."\n";
