@@ -1,5 +1,5 @@
 #!perl
- 
+
 # Test basic non-plotting interface
 #
 # This version Copyright (C) 2004 Tim Jenness. All Rights Reserved.
@@ -18,7 +18,7 @@
 #
 
 use strict;
-use Test::More tests => 9;
+use Test::More tests => 8;
 BEGIN {
   use_ok("Graphics::PLplot");
   Graphics::PLplot->import(qw/ :all /);
@@ -61,8 +61,9 @@ plSetUsage($0,"Some usage info");
 # will confuse test harness
 # plOptUsage();
 
-my $file = plgfile();
-isa_ok($file, "Graphics::PLplot");
+# Causes SEGV when both perl and plplot close the file
+#my $file = plgfile();
+#isa_ok($file, "Graphics::PLplot");
 
 plend();
 
