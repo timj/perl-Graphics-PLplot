@@ -64,7 +64,13 @@ use base qw/ Exporter DynaLoader /;
 			   plflush
 			   plfont
 			   plfontld
+			   plgchr
 			   plgver
+			   plgvpd
+			   plgvpw
+			   plgxax
+			   plgyax
+			   plgzax
 			   plhist
 			   plinit
 			   pljoin

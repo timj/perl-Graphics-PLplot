@@ -215,6 +215,18 @@ void
 c_plfontld( set )
   PLINT set
 
+# plgchr
+
+void
+c_plgchr()
+ PREINIT:
+  PLFLT p_def;
+  PLFLT p_ht;
+ PPCODE:
+  c_plgchr( &p_def, &p_ht );
+  XPUSHs( sv_2mortal(newSVnv(p_def)));
+  XPUSHs( sv_2mortal(newSVnv(p_ht)));
+
 
 # plgvers
 
@@ -227,6 +239,65 @@ c_plgver()
    c_plgver( RETVAL );
  OUTPUT:
    RETVAL
+
+# plgvpd
+void
+c_plgvpd()
+ PREINIT:
+  PLFLT p_xmin;
+  PLFLT p_xmax;
+  PLFLT p_ymin;
+  PLFLT p_ymax;
+ PPCODE:
+  c_plgvpd( &p_xmin, &p_xmax, &p_ymin, &p_ymax );
+  XPUSHs( sv_2mortal(newSVnv(p_xmin)));
+  XPUSHs( sv_2mortal(newSVnv(p_xmax)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymin)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymax)));
+
+void
+c_plgvpw()
+ PREINIT:
+  PLFLT p_xmin;
+  PLFLT p_xmax;
+  PLFLT p_ymin;
+  PLFLT p_ymax;
+ PPCODE:
+  c_plgvpw( &p_xmin, &p_xmax, &p_ymin, &p_ymax );
+  XPUSHs( sv_2mortal(newSVnv(p_xmin)));
+  XPUSHs( sv_2mortal(newSVnv(p_xmax)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymin)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymax)));
+
+void
+c_plgxax()
+ PREINIT:
+  PLINT digmax;
+  PLINT digits;
+ PPCODE:
+  c_plgxax( &digmax, &digits );
+  XPUSHs( sv_2mortal(newSViv(digmax)));
+  XPUSHs( sv_2mortal(newSViv(digits)));
+
+void
+c_plgyax()
+ PREINIT:
+  PLINT digmax;
+  PLINT digits;
+ PPCODE:
+  c_plgyax( &digmax, &digits );
+  XPUSHs( sv_2mortal(newSViv(digmax)));
+  XPUSHs( sv_2mortal(newSViv(digits)));
+
+void
+c_plgzax()
+ PREINIT:
+  PLINT digmax;
+  PLINT digits;
+ PPCODE:
+  c_plgzax( &digmax, &digits );
+  XPUSHs( sv_2mortal(newSViv(digmax)));
+  XPUSHs( sv_2mortal(newSViv(digits)));
 
 
 
