@@ -6,16 +6,19 @@ Graphics::PLplot - Perl interface to the PLplot plotting library
 
 =head1 SYNOPSIS
 
-  use Graphics::Plot qw/ :all /;
+  use Graphics::PLplot qw/ :all /;
 
-  plsdev( "xwin" );
-  plinit();
-  plcol0(1);
+  @x = (0..5);
+  @y = map {$_ * $_} @x;
 
-  plenv( -1, 1, -1, 1, 1, -2 );
-  plline(\@x, \@y);
+  plsdev ("xwin");
+  plinit ();
+  plcol0 (1);
 
-  plend();
+  plenv (-0.5, 5.5, -1, 26, 0, 0);
+  plline (\@x, \@y);
+
+  plend ();
 
 =head1 DESCRIPTION
 
@@ -24,9 +27,9 @@ available from http://www.plplot.org. The interface is very similar
 to the C interface except that:
 
  - Arrays are passed in by reference
- - If the number of elements in an array are required by the C function
+ - If the number of elements in an array is required by the C function
    the perl interface calculates this automatically [eg plline]
- - Return values are returned not supplied as arguments
+ - Return values are returned and not supplied as arguments
 
 =cut
 
