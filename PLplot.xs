@@ -205,6 +205,16 @@ c_plerry( x, ymin, ymax )
 void
 c_plflush()
 
+# plfont
+
+void
+c_plfont( input )
+  PLINT input
+
+void
+c_plfontld( set )
+  PLINT set
+
 
 # plgvers
 
@@ -272,11 +282,28 @@ c_plpoin( x, y, code )
  CODE:
   c_plpoin( len, x, y, code);
 
+# plptex
+
+void
+c_plptex( x, y, dx, dy, just, text )
+  PLFLT x
+  PLFLT y
+  PLFLT dx
+  PLFLT dy
+  PLFLT just
+  char * text
+
+# plschr
+
+void
+c_plschr( def, scale )
+  PLFLT def
+  PLFLT scale
 
 # plsdev
 
 void
-plsdev( devname )
+c_plsdev( devname )
   char * devname
 
 # plssub
@@ -303,6 +330,12 @@ c_plsyax( digimax, digits )
   PLINT digimax
   PLINT digits
 
+void
+c_plvpor( xmin, xmax, ymin, ymax )
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
 
 void
 c_plvsta()
@@ -317,4 +350,3 @@ c_plwind( xmin, xmax, ymin, ymax )
   PLFLT xmax
   PLFLT ymin
   PLFLT ymax
-
