@@ -158,7 +158,7 @@ void* pack1D_sz( SV* arg, char packtype, int * nelem) {
       n = av_len(array);
 
       if ( nelem != NULL )
-	*nelem = n;
+	*nelem = n + 1;
  
       if (packtype=='f')
           SvGROW( work, sizeof(float)*(n+1) );  /* Pregrow for efficiency */
@@ -316,7 +316,7 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
       }
    
       n = av_len(array);
-      if (nx != NULL) *nx = n;
+      if (nx != NULL) *nx = n + 1;
       
       /* Pack array into string */
    
@@ -335,7 +335,7 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
             }
    
 
-            if (ny != NULL) *ny = m; 
+            if (ny != NULL) *ny = m + 1; 
 
             /* Pregrow storage for efficiency on first row - note assumes 
                array is rectangular but better than nothing  */
