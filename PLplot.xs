@@ -200,6 +200,9 @@ c_plerry( x, ymin, ymax )
   c_plerry( n, x, ymin, ymax );
 
 void
+c_plfamadv()
+
+void
 c_plfill( x, y )
   PLFLT * x
   PLFLT * y
@@ -207,6 +210,16 @@ c_plfill( x, y )
   PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plfill( len, x, y );
+
+void
+c_plfill3( x, y, z )
+  PLFLT * x
+  PLFLT * y
+  PLFLT * z
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plfill3( len, x, y, z );
 
 
 # plflush
@@ -235,6 +248,162 @@ c_plgchr()
   c_plgchr( &p_def, &p_ht );
   XPUSHs( sv_2mortal(newSVnv(p_def)));
   XPUSHs( sv_2mortal(newSVnv(p_ht)));
+
+void
+c_plgcol0(icol0)
+  PLINT icol0
+ PREINIT:
+  PLINT r;
+  PLINT g;
+  PLINT b;
+ PPCODE:
+  c_plgcol0( icol0, &r, &g, &b );
+  XPUSHs( sv_2mortal(newSViv(r)));
+  XPUSHs( sv_2mortal(newSViv(g)));
+  XPUSHs( sv_2mortal(newSViv(b)));
+
+void
+c_plgcolbg()
+ PREINIT:
+  PLINT r;
+  PLINT g;
+  PLINT b;
+ PPCODE:
+  c_plgcolbg( &r, &g, &b );
+  XPUSHs( sv_2mortal(newSViv(r)));
+  XPUSHs( sv_2mortal(newSViv(g)));
+  XPUSHs( sv_2mortal(newSViv(b)));
+
+PLINT
+plgcompression()
+ CODE:
+  plgcompression( &RETVAL );
+ OUTPUT:
+  RETVAL
+
+char *
+c_plgdev()
+ PREINIT:
+   char ver[80];
+ CODE:
+   RETVAL = ver;
+   c_plgdev( RETVAL );
+ OUTPUT:
+   RETVAL
+
+void
+c_plgdidev()
+ PREINIT:
+  PLFLT p_mar;
+  PLFLT p_aspect;
+  PLFLT p_jx;
+  PLFLT p_jy;
+ PPCODE:
+  c_plgdidev( &p_mar, &p_aspect, &p_jx, &p_jy );
+  XPUSHs( sv_2mortal(newSVnv(p_mar)));
+  XPUSHs( sv_2mortal(newSVnv(p_aspect)));
+  XPUSHs( sv_2mortal(newSVnv(p_jx)));
+  XPUSHs( sv_2mortal(newSVnv(p_jy)));
+
+PLFLT
+plgdiori()
+ CODE:
+  plgdiori( &RETVAL );
+ OUTPUT:
+  RETVAL
+
+void
+c_plgdiplt()
+ PREINIT:
+  PLFLT p_xmin;
+  PLFLT p_ymin;
+  PLFLT p_xmax;
+  PLFLT p_ymax;
+ PPCODE:
+  c_plgdiplt( &p_xmin, &p_ymin, &p_xmax, &p_ymax );
+  XPUSHs( sv_2mortal(newSVnv(p_xmin)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymin)));
+  XPUSHs( sv_2mortal(newSVnv(p_xmax)));
+  XPUSHs( sv_2mortal(newSVnv(p_ymax)));
+
+
+void
+c_plgfam()
+ PREINIT:
+  PLINT fam;
+  PLINT num;
+  PLINT bmax;
+ PPCODE:
+  c_plgfam( &fam, &num, &bmax );
+  XPUSHs( sv_2mortal(newSViv(fam)));
+  XPUSHs( sv_2mortal(newSViv(num)));
+  XPUSHs( sv_2mortal(newSViv(bmax)));
+
+
+char *
+c_plgfnam()
+ PREINIT:
+   char ver[80];
+ CODE:
+   RETVAL = ver;
+   c_plgfnam( RETVAL );
+ OUTPUT:
+   RETVAL
+
+PLINT
+c_plglevel()
+ CODE:
+   c_plglevel( &RETVAL );
+ OUTPUT:
+   RETVAL
+
+void
+c_plgpage()
+ PREINIT:
+  PLFLT xp;
+  PLFLT yp;
+  PLINT xleng;
+  PLINT yleng;
+  PLINT xoff;
+  PLINT yoff;
+ PPCODE:
+  c_plgpage( &xp, &yp, &xleng, &yleng, &xoff, &yoff);
+  XPUSHs( sv_2mortal(newSVnv(xp)));
+  XPUSHs( sv_2mortal(newSVnv(yp)));
+  XPUSHs( sv_2mortal(newSViv(xleng)));
+  XPUSHs( sv_2mortal(newSViv(yleng)));
+  XPUSHs( sv_2mortal(newSViv(xoff)));
+  XPUSHs( sv_2mortal(newSViv(yoff)));
+
+void
+plgra()
+
+#  plgriddata - XXXXX Not yet
+#    Need to know what to do with the 1-D perl output array
+#    How do we make it usable without PDL?
+
+
+void
+c_plgspa()
+ PREINIT:
+  PLFLT xmin;
+  PLFLT ymin;
+  PLFLT xmax;
+  PLFLT ymax;
+ PPCODE:
+  c_plgspa( &xmin, &ymin, &xmax, &ymax );
+  XPUSHs( sv_2mortal(newSVnv(xmin)));
+  XPUSHs( sv_2mortal(newSVnv(ymin)));
+  XPUSHs( sv_2mortal(newSVnv(xmax)));
+  XPUSHs( sv_2mortal(newSVnv(ymax)));
+
+
+PLINT
+c_plgstrm()
+ CODE:
+   c_plgstrm( &RETVAL );
+ OUTPUT:
+   RETVAL
 
 
 # plgvers
@@ -322,6 +491,10 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
  CODE:
   c_plhist( len, data, datmin, datmax, nbin, oldwin);
 
+
+# plhls is now deprecated
+
+
 # plinit
 
 void
@@ -343,6 +516,11 @@ c_pllab( xlabel, ylabel, tlabel)
   char * ylabel
   char * tlabel
 
+void
+c_pllightsource(x,y,z )
+  PLFLT x
+  PLFLT y
+  PLFLT z
 
 # plline
 
@@ -356,9 +534,29 @@ c_plline( x, y )
   c_plline( len, x, y );
 
 void
+c_plline3( x, y, z )
+  PLFLT * x
+  PLFLT * y
+  PLFLT * z
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plline3( len, x, y, z );
+
+void
 c_pllsty( input )
   PLINT input
 
+# plmesh - not yet XXXXX
+
+# plmeshc - not yet XXXXX
+
+PLINT
+c_plmkstrm()
+ CODE:
+   c_plmkstrm( &RETVAL );
+ OUTPUT:
+   RETVAL
 
 # plmtex
 
@@ -369,6 +567,24 @@ c_plmtex( side, disp, pos, just, text )
   PLFLT pos
   PLFLT just
   char * text
+
+# plot3d - not yet  XXXXX
+# plot3dc - not yet  XXXXX
+
+# plpage - see plbop
+
+
+
+void
+c_plpat( inc, del )
+  PLINT * inc
+  PLINT * del
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plpat( len, inc, del);
+
+
 
 # plpoin
 
@@ -382,6 +598,33 @@ c_plpoin( x, y, code )
  CODE:
   c_plpoin( len, x, y, code);
 
+void
+c_plpoin3( x, y, z, code )
+  PLFLT * x
+  PLFLT * y
+  PLFLT * z
+  PLINT code
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plpoin3( len, x, y, z, code);
+
+void
+c_plpoly3( x, y, z, draw, ifcc )
+  PLFLT * x
+  PLFLT * y
+  PLFLT * z
+  PLINT * draw
+  PLINT ifcc
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plpoly3( len, x, y, z, draw, ifcc);
+
+void
+c_plprec( set, prec )
+  PLINT set
+  PLINT prec
 
 void
 c_plpsty(n)
@@ -398,6 +641,11 @@ c_plptex( x, y, dx, dy, just, text )
   PLFLT just
   char * text
 
+void
+c_plreplot()
+
+# plrgb - deprecated
+
 # plschr
 
 void
@@ -405,11 +653,161 @@ c_plschr( def, scale )
   PLFLT def
   PLFLT scale
 
+void
+c_plscmap0( r, g, b )
+  PLINT * r
+  PLINT * g
+  PLINT * b
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plscmap0( r, g, b, len );
+
+void
+c_plscmap0n( ncol0 )
+  PLINT ncol0
+
+void
+c_plscmap1( r, g, b )
+  PLINT * r
+  PLINT * g
+  PLINT * b
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plscmap1( r, g, b, len );
+
+# plscmap1l - need to allow rev to be an empty array. XXXXX
+
+void
+c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
+  PLINT itype
+  PLFLT * pos
+  PLFLT * coord1
+  PLFLT * coord2
+  PLFLT * coord3
+  PLINT * rev
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plscmap1l( itype, len, pos, coord1, coord2, coord3, rev);
+
+
+void
+c_plscmap1n( ncol1 )
+  PLINT ncol1
+
+void
+c_plscol0( icol0, r, g, b)
+  PLINT icol0
+  PLINT r
+  PLINT g
+  PLINT b
+
+void
+c_plscolbg( r, g, b)
+  PLINT r
+  PLINT g
+  PLINT b
+
+void
+c_plscolor( color )
+  bool color
+ CODE:
+  c_plscolor( (PLINT)color );
+
+void
+c_plscompression( compression )
+  PLINT compression
+
 # plsdev
 
 void
 c_plsdev( devname )
   char * devname
+
+void
+c_plsdidev( mar, aspect, jx, jy)
+  PLFLT mar
+  PLFLT aspect
+  PLFLT jx
+  PLFLT jy
+
+# plsdimap - Not yet public interface
+
+void
+c_plsdiori( rot )
+  PLFLT rot
+
+void
+c_plsdiplt( xmin, ymin, xmax, ymax )
+  PLFLT xmin
+  PLFLT ymin
+  PLFLT xmax
+  PLFLT ymax
+
+void
+c_plsdiplz( xmin, ymin, xmax, ymax )
+  PLFLT xmin
+  PLFLT ymin
+  PLFLT xmax
+  PLFLT ymax
+
+void
+c_plsesc( esc )
+  char esc
+
+void
+c_plsetopt( opt, optarg )
+  char * opt
+  char * optarg
+
+void
+c_plsfam( fam, num, bmax )
+  PLINT fam
+  PLINT num
+  PLINT bmax
+
+void
+c_plsfnam( input )
+  char * input
+
+# plshades NOT YET - XXXX
+
+void
+c_plsmaj( def, scale )
+  PLFLT def
+  PLFLT scale
+
+# plsmem - NOT YET XXXX
+
+void
+c_plsmin( def, scale )
+  PLFLT def
+  PLFLT scale
+
+void
+c_plsori( ori )
+  PLINT ori
+
+void
+c_plspage( xp, yp, xleng, yleng, xoff, yoff )
+  PLFLT xp
+  PLFLT yp
+  PLINT xleng
+  PLINT yleng
+  PLINT xoff
+  PLINT yoff
+
+void
+c_plspause( pause )
+  bool pause
+ CODE:
+  c_plspause( (PLINT)pause );
+
+void
+c_plsstrm( strm )
+  PLINT strm
 
 # plssub
 
@@ -417,6 +815,35 @@ void
 c_plssub( nx, ny )
   PLINT nx
   PLINT ny
+
+void
+c_plssym( def, scale)
+  PLFLT def
+  PLFLT scale
+
+void
+c_plstar(nx, ny)
+ PLINT nx
+ PLINT ny
+
+void
+c_plstart(device, nx, ny)
+  char * device
+  PLINT nx
+  PLINT ny
+
+void
+c_plstripa(id, p, x, y)
+  PLINT id
+  PLINT p
+  PLFLT x
+  PLFLT y
+
+#PLINT
+#c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, collab,colline,styline,legline,labx,laby,labtop)
+# CODE:
+
+
 
 # plstyl - empty arrays are allowed
 

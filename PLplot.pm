@@ -61,11 +61,27 @@ use base qw/ Exporter DynaLoader /;
 			   pleop
 			   plerrx
 			   plerry
+			   plfamadv
 			   plfill
+			   plfill3
 			   plflush
 			   plfont
 			   plfontld
 			   plgchr
+			   plgcol0
+			   plgcolbg
+			   plgcompression
+			   plgdev
+			   plgdidev
+			   plgdiori
+			   plgdiplt
+			   plgfam
+			   plgfnam
+			   plglevel
+			   plgpage
+			   plgra
+			   plgspa
+			   plgstrm
 			   plgver
 			   plgvpd
 			   plgvpw
@@ -76,15 +92,51 @@ use base qw/ Exporter DynaLoader /;
 			   plinit
 			   pljoin
 			   pllab
+			   pllightsource
 			   plline
+			   plline3
 			   pllsty
+			   plmkstrm
 			   plmtex
+			   plpat
 			   plpoin
+			   plpoin3
+			   plpoly3
+			   plprec
 			   plpsty
 			   plptex
+			   plreplot
 			   plschr
+			   plscmap0
+			   plscmap0n
+			   plscmap1
+			   plscmap1l
+			   plscmap1n
+			   plscol0
+			   plscolbg
+			   plscolor
+			   plscompression
 			   plsdev
+			   plsdidev
+			   plsdiori
+			   plsdiplt
+			   plsdiplz
+			   plsesc
+			   plsetopt
+			   plsfam
+			   plsfnam
+			   plsmaj
+			   plsmin
+			   plsori
+			   plspage
+			   plspause
+			   plsstrm
 			   plssub
+			   plssym
+			   plstar
+			   plstart
+			   plstripa
+			   plstripc
 			   plstyl
 			   plsyax
 			   plsym
