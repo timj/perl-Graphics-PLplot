@@ -64,19 +64,35 @@ char ** pack1Dchar( AV * avref ) {
   return outarr;
 }
 
+/* Helper routine for unpacking char ** */
+
+AV* unpack1Dchar( char ** inarr, int nelem ) {
+   AV* arr = newAV();
+   SV * string;
+   SV** elem;
+   int i;
+
+   for (i = 0; i < nelem ; i++ ) {
+       string = newSVpv( inarr[i], 0);
+       elem = av_store(  arr, i, string );
+       if (elem == NULL)
+          SvREFCNT_dec(string);
+   }
+   return arr;
+}
 
 
 MODULE = Graphics::PLplot     PACKAGE = Graphics::PLplot PREFIX = c_
 
 
 void
-pl_setcontlabelformat( lexp, sigdig )
+c_pl_setcontlabelformat( lexp, sigdig )
   PLFLT lexp
   PLFLT sigdig
 
 
 void
-pl_setcontlabelparam( offset, size, active, spacing )
+c_pl_setcontlabelparam( offset, size, active, spacing )
   PLFLT offset
   PLFLT size
   PLFLT active
@@ -1069,6 +1085,144 @@ c_plxormod( mode )
   RETVAL = status;
  OUTPUT:
   RETVAL
+
+### The C specific routines
+
+void
+plgFileDevs()
+ PREINIT:
+  char ** menustr;
+  char ** devname;
+  int ndev;
+ PPCODE:
+  /* Guess at largest number of drivers !! */
+  menustr = get_mortalspace( 1024, 'v');
+  devname = get_mortalspace( 1024, 'v');
+  plgFileDevs(&menustr, &devname, &ndev);
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( menustr, ndev) ));
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( devname, ndev) ));
+
+void
+plgDevs()
+ PREINIT:
+  char ** menustr;
+  char ** devname;
+  int ndev;
+ PPCODE:
+  /* Guess at largest number of drivers !! */
+  menustr = get_mortalspace( 1024, 'v');
+  devname = get_mortalspace( 1024, 'v');
+  plgDevs(&menustr, &devname, &ndev);
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( menustr, ndev) ));
+  XPUSHs( newRV_noinc( (SV*)unpack1Dchar( devname, ndev) ));
+
+## plsKeyEH - XXXXX not yet
+
+## plsButtonEH - XXXXX not yet
+
+## plsbobH     - XXXXX not yet
+
+## plseopH     - XXXXX not yet
+
+## plsError    - XXXXX not yet decided
+
+## plsexit     - XXXXX not yet
+
+## plsabort    - XXXXX not yet
+
+
+## plClearOpts
+
+void
+plClearOpts()
+
+void
+plResetOpts()
+
+#int
+#plMergeOpts()
+
+void
+plSetUsage( program_string, usage_string )
+  char * program_string
+  char * usage_string
+
+void
+plOptUsage()
+
+# This may cause problems since perl may well attempt to close
+# this file itself
+
+FILE *
+plgfile()
+ CODE:
+  plgfile(&RETVAL);
+ OUTPUT:
+  RETVAL
+
+void
+plsfile( file )
+  FILE * file
+
+char
+plgesc()
+ CODE:
+   plgesc(&RETVAL);
+ OUTPUT:
+   RETVAL
+
+# Not really much need for plFindName or plFindCommand etc
+
+# plGetCursor - return list of keyword value pairs
+#  If not translation to world coordinates is possible, they
+#  are not returned in the list
+
+void
+plGetCursor()
+ PREINIT:
+   PLGraphicsIn gin;
+   int status;
+ PPCODE:
+  status = plGetCursor( &gin );
+  XPUSHs(sv_2mortal(newSVpv( "dX", 0 )));
+  XPUSHs(sv_2mortal(newSVnv( gin.dX )));
+  XPUSHs(sv_2mortal(newSVpv( "dY", 0 )));
+  XPUSHs(sv_2mortal(newSVnv( gin.dY )));
+  XPUSHs(sv_2mortal(newSVpv( "pX", 0 )));
+  XPUSHs(sv_2mortal(newSVnv( gin.pX )));
+  XPUSHs(sv_2mortal(newSVpv( "pY", 0 )));
+  XPUSHs(sv_2mortal(newSVnv( gin.pY )));
+  if (status == 1 ) {
+    XPUSHs(sv_2mortal(newSVpv( "wX", 0 )));
+    XPUSHs(sv_2mortal(newSVnv( gin.wX )));
+    XPUSHs(sv_2mortal(newSVpv( "wY", 0 )));
+    XPUSHs(sv_2mortal(newSVnv( gin.wY )));
+    XPUSHs(sv_2mortal(newSVpv( "subwindow", 0 )));
+    XPUSHs(sv_2mortal(newSViv( gin.subwindow )));
+  }
+  XPUSHs(sv_2mortal(newSVpv( "state", 0 )));
+  XPUSHs(sv_2mortal(newSVuv( gin.state )));
+  XPUSHs(sv_2mortal(newSVpv( "keysym", 0 )));
+  XPUSHs(sv_2mortal(newSVuv( gin.keysym )));
+  XPUSHs(sv_2mortal(newSVpv( "button", 0 )));
+  XPUSHs(sv_2mortal(newSVuv( gin.button )));
+  XPUSHs(sv_2mortal(newSVpv( "string", 0 )));
+  XPUSHs(sv_2mortal(newSVpv( gin.string, 0 )));
+
+char*
+plP_getinitdriverlist()
+  PREINIT:
+    char buffer[1024];
+  CODE:
+    RETVAL = buffer;
+    plP_getinitdriverlist( buffer );
+  OUTPUT:
+    RETVAL
+
+bool
+plP_checkdriverinit(list)
+  char * list
+
 
 ### PRIVATE ROUTINES that should not be exported
 

@@ -3,7 +3,7 @@ PLFLT		T_NV
 PLFLT *	 	T_FLTARRAY
 PLFLT2D *	T_FLT2DARR
 PLINT *		T_INTARRAY
-char **		T_PACK1DCHAR
+char **		T_1DCHARARR
 PLSTRIPID       T_STRIPINT
 
 INPUT
@@ -14,7 +14,7 @@ T_INTARRAY
 	$var = ($type)pack1D($arg,'i')
 T_FLT2DARR
 	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
-T_PACK1DCHAR
+T_1DCHARARR
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV)
 	    $var = pack1Dchar((AV*)SvRV($arg));
 	else
@@ -30,3 +30,5 @@ OUTPUT
 
 T_STRIPINT
 	sv_setiv(newSVrv($arg,\"Graphics::PLplot::StripChart\"), (IV)$var);
+
+	

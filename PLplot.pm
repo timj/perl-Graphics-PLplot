@@ -46,6 +46,10 @@ use base qw/ Exporter DynaLoader /;
 %EXPORT_TAGS = (
 		
 		'all'=>[qw/
+			   pl_setcontlabelformat
+			   pl_setcontlabelparam
+			   plP_getinitdriverlist
+			   plP_checkdriverinit
 			   pladv
 			   plaxes
 			   plbin
@@ -155,6 +159,16 @@ use base qw/ Exporter DynaLoader /;
 			   plwid
 			   plwind
 			   plxormod
+			   plgFileDevs
+			   plgDevs
+			   plClearOpts
+			   plResetOpts
+			   plSetUsage
+			   plOptUsage
+			   plgfile
+			   plsfile
+			   plgesc
+			   plGetCursor
 			   /],
 	       );
 
