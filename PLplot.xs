@@ -33,6 +33,36 @@ extern "C" {
 #include "plplot/plplot.h"
 #include "arrays.h"
 
+/* Use typedef for StripChart ID */
+typedef PLINT PLSTRIPID;
+
+/* Helper routine for packing string arrays */
+
+char ** pack1Dchar( AV * avref ) {
+  int i;
+  SV ** elem;
+  char ** outarr;
+  int len;
+  STRLEN linelen;
+ 
+  /* number of elements */
+  len  = av_len( avref ) + 1;
+  /* Temporary storage */
+  outarr = get_mortalspace( len,'v');
+ 
+  for (i=0; i<len; i++) {
+    elem = av_fetch( avref, i, 0);
+    if (elem == NULL ) {
+      /* undef */
+    } else {
+      outarr[i] = SvPV( *elem, linelen);
+    }
+  }
+  return outarr;
+}
+
+
+
 MODULE = Graphics::PLplot     PACKAGE = Graphics::PLplot PREFIX = c_
 
 
@@ -832,17 +862,60 @@ c_plstart(device, nx, ny)
   PLINT nx
   PLINT ny
 
+# Strip chart stuff goes in its own namespace
+
+# This does not look like a constructor
+
+PLSTRIPID
+c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, collab,colline,styline,legline,labx,laby,labtop)
+  char * xspec
+  char * yspec
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT xjump
+  PLFLT ymin
+  PLFLT ymax
+  PLFLT xlpos
+  PLFLT ylpos
+  bool  y_ascl
+  bool  acc
+  PLINT colbox
+  PLINT collab
+  PLINT * colline
+  PLINT * styline
+  char ** legline
+  char * labx
+  char * laby
+  char * labtop
+ CODE:
+   c_plstripc( &RETVAL, xspec, yspec, xmin, xmax, xjump, ymin, ymax, xlpos, ylpos, (PLINT)y_ascl, (PLINT)acc, colbox, collab, colline, styline, legline, labx, laby, labtop);
+ OUTPUT:
+  RETVAL
+
+MODULE = Graphics::PLplot   PACKAGE = Graphics::PLplot::StripChart PREFIX = c_
+
+# Provide an alias in the standard namespace for non method use
+
 void
 c_plstripa(id, p, x, y)
-  PLINT id
+  PLSTRIPID id
   PLINT p
   PLFLT x
   PLFLT y
+ ALIAS:
+  Graphics::PLplot::plstripa = 1
 
-#PLINT
-#c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, collab,colline,styline,legline,labx,laby,labtop)
-# CODE:
+# plstripd - implemented as auto destructor
 
+void
+DESTROY( id )
+  PLSTRIPID id
+CODE:
+  c_plstripd( id );
+
+# Back to the normal namespace
+
+MODULE = Graphics::PLplot   PACKAGE = Graphics::PLplot PREFIX = c_
 
 
 # plstyl - empty arrays are allowed
