@@ -15,7 +15,9 @@ T_INTARRAY
 	PLINT ix_$var;
 	$var = ($type)pack1D_sz($arg,'i',&ix_$var);
 T_FLT2DARR
-	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
+	PLINT nx_$var;
+	PLINT ny_$var;
+	$var = ($type)pack2D_sz($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'),&nx_$var,&ny_$var)
 T_1DCHARARR
         PLINT ix_$var;
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV)

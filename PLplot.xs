@@ -550,10 +550,8 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
 #  Currently do not determine nx and ny from data
 
 void
-c_plimage( pdata, nx, ny, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax)
+c_plimage( pdata,xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax, ...)
   PLFLT2D * pdata
-  PLINT nx
-  PLINT ny
   PLFLT xmin
   PLFLT xmax
   PLFLT ymin
@@ -570,18 +568,28 @@ c_plimage( pdata, nx, ny, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymi
   int j;
   int k = 0;
  CODE:
+  /* Allow two additional optional arguments */
+  if (items < 11 || items > 13)
+        Perl_croak(aTHX_ "Usage: Graphics::PLplot::plimage(pdata, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin,Dymax,[nx,ny]");
+
+  /* Read optional arguments */
+  if (items > 11)
+    nx_pdata = (PLINT)SvIV(ST(11));
+  if (items > 12)
+    ny_pdata = (PLINT)SvIV(ST(12));
+
   /* this is incredibly inefficient since we go from a 2D perl array
      to some C memory to some more C memory. Needs tidying up a lot.
      May as well just support a serialised 1D perl array */
-  plAlloc2dGrid(&data, nx, ny);
-  for (i = 0; i < nx; i++) {
-    for (j = 0; j < ny; j++) {
+  plAlloc2dGrid(&data, nx_pdata, ny_pdata);
+  for (i = 0; i < nx_pdata; i++) {
+    for (j = 0; j < ny_pdata; j++) {
       data[i][j] = pdata[k];
       k++;
     }
   }
-  plimage( data, nx, ny, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax);
-  plFree2dGrid(data,nx,ny);
+  plimage( data, nx_pdata, ny_pdata, xmin, xmax, ymin, ymax, zmin, zmax, Dxmin, Dxmax, Dymin, Dymax);
+  plFree2dGrid(data,nx_pdata,ny_pdata);
 
 
 # plinit
@@ -750,7 +758,8 @@ c_plscmap1( r, g, b )
  CODE:
   c_plscmap1( r, g, b, ix_r );
 
-# plscmap1l - need to allow rev to be an empty array. XXXXX
+# plscmap1l - need to allow rev to be an empty array
+#   If @rev is empty we pass a NULL to the C routine.
 
 void
 c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
@@ -761,6 +770,7 @@ c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
   PLFLT * coord3
   PLINT * rev
  CODE:
+  if (ix_rev == 0) rev ==NULL;
   c_plscmap1l( itype, ix_pos, pos, coord1, coord2, coord3, rev);
 
 
@@ -957,6 +967,40 @@ CODE:
 # Back to the normal namespace
 
 MODULE = Graphics::PLplot   PACKAGE = Graphics::PLplot PREFIX = c_
+
+
+# plsurf3d
+
+void
+c_plsurf3d( x, y, z, opt, clevel )
+  PLFLT * x
+  PLFLT * y
+  PLFLT2D * z
+  PLINT opt
+  PLFLT * clevel
+ PREINIT:
+  PLFLT ** zdata;
+  int i;
+  int j;
+  int k = 0;
+ CODE:
+  if (ix_x != nx_z)
+     Perl_croak(aTHX_ "Dimension of X array must be same as first dimension of Z array [%d != %d]",ix_x,nx_z);
+  if (ix_y != ny_z)
+     Perl_croak(aTHX_ "Dimension of Y array must be same as first dimension of Z array [%d != %d]",ix_y,ny_z);
+
+  /* this is incredibly inefficient since we go from a 2D perl array
+     to some C memory to some more C memory. Needs tidying up a lot.
+     May as well just support a serialised 1D perl array */
+  plAlloc2dGrid(&zdata, nx_z, ny_z);
+  for (i = 0; i < nx_z; i++) {
+    for (j = 0; j < ny_z; j++) {
+      zdata[i][j] = z[k];
+      k++;
+    }
+  }
+  plsurf3d(x,y,zdata,nx_z,ny_z,opt,clevel, ix_clevel);
+
 
 
 # plstyl - empty arrays are allowed
@@ -1277,6 +1321,52 @@ PL_PARSE_SKIP()
   RETVAL = PL_PARSE_SKIP;
  OUTPUT:
   RETVAL
+
+
+int
+FACETED()
+ PROTOTYPE:
+ CODE:
+  RETVAL = FACETED;
+ OUTPUT:
+  RETVAL
+
+
+int
+MAG_COLOR()
+ PROTOTYPE:
+ CODE:
+  RETVAL = MAG_COLOR;
+ OUTPUT:
+  RETVAL
+
+int
+SURF_CONT()
+ PROTOTYPE:
+ CODE:
+  RETVAL = SURF_CONT;
+ OUTPUT:
+  RETVAL
+
+int
+BASE_CONT()
+ PROTOTYPE:
+ CODE:
+  RETVAL = BASE_CONT;
+ OUTPUT:
+  RETVAL
+
+int
+DRAW_SIDES()
+ PROTOTYPE:
+ CODE:
+  RETVAL = DRAW_SIDES;
+ OUTPUT:
+  RETVAL
+
+
+
+
 
 
 

@@ -288,7 +288,7 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
    unsigned char uscalar;
    AV* array;
    AV* array2 = Nullav;
-   I32 i,j,n,m;
+   I32 i,j,n,m,m_old;
    SV* work;
    SV** work2;
    double nval = 0.0;
@@ -297,7 +297,7 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
 
    if (nx != NULL) *nx = -1;
    if (ny != NULL) *ny = -1;
-
+   m_old = -1;
 
    if (is_scalar_ref(arg))                 /* Scalar ref */
       return (void*) SvPV(SvRV(arg), len);
@@ -343,13 +343,16 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
             if (isref) {
                array2 = (AV *) SvRV(*work2);  /* array of 2nd dimension */
                m = av_len(array2);            /* Length */
-            }else{
+            } else {
                m=0;                          /* 1D array */
                nval = SvNV(*work2);               
             }
-   
 
-            if (ny != NULL) *ny = m + 1; 
+            /* first time around store value in m_old else compare*/
+            if (m_old != -1 && m_old != m)
+               Perl_croak(aTHX_ "2D array is not rectangular. Row %d has %d elements, not %d",(n+1),(m+1),(m_old+1));
+            m_old = m;
+
 
             /* Pregrow storage for efficiency on first row - note assumes 
                array is rectangular but better than nothing  */
@@ -364,7 +367,7 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
                if (packtype=='u')
                  SvGROW( work, sizeof(char)*(n+1)*(m+1) );
 	       if (packtype=='d')
-		 SvGROW( work, sizeof(double)*(n+1) );
+		 SvGROW( work, sizeof(double)*(n+1)*(m+1) );
             }
    
             for(j=0; j<=m; j++) {  /* Loop over 2nd dimension */
@@ -403,6 +406,9 @@ void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
             }
       }
    
+      /* Store ny */
+      if (ny != NULL) *ny = m + 1;
+
       /* Return a pointer to the byte array */
    
       return (void *) SvPV(work, PL_na);

@@ -63,14 +63,14 @@ if ($dbg) {
   for my $i (0..(YDIM-1)) {
     $z->[0]->[$i] = 1;        # Top
   }
-  for my $i (0..(XDIM-1)) {
+  for my $i (0..(YDIM-1)) {
     $z->[XDIM-1]->[$i] = 1;   # Bottom
   }
 
   pllab("...around a blue square."," ",
 	"A red border should appear...");
 
-  plimage($z, XDIM, YDIM, 1, XDIM, 1, YDIM, 0, 0,
+  plimage($z, 1, XDIM, 1, YDIM, 0, 0,
 	  1, XDIM, 1, YDIM);
 
   sleep($sleep);
@@ -102,7 +102,7 @@ if (!$nosombrero) {
   pllab("No, an amplitude clipped \"sombrero\"", "", "Saturn?");
   plptex(2., 2., 3., 4., 0., "Transparent image");
 
-  plimage($z, XDIM, YDIM, 0, 2*pi, 0, 3*pi, 0.05, 1,
+  plimage($z, 0, 2*pi, 0, 3*pi, 0.05, 1,
 	  0, 2*pi, 0, 3*pi);
 
   save_plot( $f_name ) if $f_name;
