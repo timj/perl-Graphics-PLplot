@@ -71,9 +71,19 @@ c_plbin( x, y, center )
   PLFLT * y
   PLINT center
  PREINIT:
-  int len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plbin( len, x, y, center);
+
+void
+c_plbox(xopt, xtick, nxsub, yopt, ytick, nysub)
+  char * xopt
+  PLFLT xtick
+  PLINT nxsub
+  char * yopt
+  PLFLT ytick
+  PLINT nysub
+
 
 void
 c_plcol0( colindex )
@@ -101,6 +111,12 @@ c_plenv( xmin, xmax, ymin, ymax, just, axis )
   PLINT just
   PLINT axis
 
+# plflush
+
+void
+c_plflush()
+
+
 # plgvers
 
 char *
@@ -123,7 +139,7 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
   PLINT nbin
   PLINT oldwin
  PREINIT:
-  int len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plhist( len, data, datmin, datmax, nbin, oldwin);
 
@@ -144,7 +160,7 @@ c_plline( x, y )
   PLFLT * x
   PLFLT * y
  PREINIT:
-  int len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plline( len, x, y );
 
@@ -157,7 +173,7 @@ c_plpoin( x, y, code )
   PLFLT * y
   PLINT code
  PREINIT:
-  int len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plpoin( len, x, y, code);
 
@@ -175,4 +191,35 @@ c_plssub( nx, ny )
   PLINT nx
   PLINT ny
 
+# plstyl - empty arrays are allowed
+
+void
+c_plstyl( mark, space )
+  PLINT * mark
+  PLINT * space
+ PREINIT:
+  PLINT nels = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plstyl( nels, mark, space );
+
+
+void
+c_plsyax( digimax, digits )
+  PLINT digimax
+  PLINT digits
+
+
+void
+c_plvsta()
+
+void
+c_plwid( width )
+  PLINT width
+
+void
+c_plwind( xmin, xmax, ymin, ymax )
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
 
