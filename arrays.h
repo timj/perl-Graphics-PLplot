@@ -7,7 +7,9 @@
 #ifndef _INC_ARRAYS_
  
 void* pack1D(SV* arg, char packtype);         /* Pack perl 1D array        */
+void* pack1D_sz(SV* arg, char packtype, int * nelem); /* Pack perl 1D array [with size] */
 void* pack2D(SV* arg, char packtype);         /* Pack perl 1-2D array      */
+void* pack2D_sz(SV* arg, char packtype, int * nx, int* ny); /* Pack perl 1-2D array [with size]  */
 void* packND(SV* arg, char packtype);         /* Pack perl array N-D array */
 void  unpack1D(SV* arg, void * var,           /* Unpack 1D array           */
                char packtype, int n);

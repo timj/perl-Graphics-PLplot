@@ -16,6 +16,9 @@ Dec 96: Add 'ref to scalar is binary' handling  - kgb@aaoepp.aao.gov.au
 Jan 97: Handles undefined values as zero        - kgb@aaoepp.aao.gov.au
 Feb 97: Fixed a few type cast howlers+bugs      - kgb@aaoepp.aao.gov.au
 Apr 97: Add support for unsigned char and shorts- timj@jach.hawaii.edu
+Mar 04: Add 'v' type (for pointer arrays)       - timj@jach.hawaii.edu
+        Add _sz variants that return the number
+        of elements processed by packXD.
    
 */
 
@@ -69,10 +72,21 @@ T_FLOATP
 T_DOUBLEP
 	$var = ($type)pack1D($arg,'d')
 
+
+pack1D_sz() is the same as pack1D except a pointer to an int
+   can be supplied as third argument which will contain the
+   number of elements in the array on completion.
+   Will be set to -1 if this function was called with something
+   other than an array (eg a PDL).
+
 */
 
 void* pack1D ( SV* arg, char packtype ) {
+  int nelem;
+  return pack1D_sz( arg, packtype, &nelem );
+}
 
+void* pack1D_sz( SV* arg, char packtype, int * nelem) {
    int iscalar;
    float scalar;
    double dscalar;
@@ -84,6 +98,9 @@ void* pack1D ( SV* arg, char packtype ) {
    SV** work2;
    double nval;
    STRLEN len;
+
+   /* assume no size known */
+   if (nelem != NULL) *nelem = -1;
 
    if (is_scalar_ref(arg))                 /* Scalar ref */
       return (void*) SvPV(SvRV(arg), len);
@@ -139,7 +156,10 @@ void* pack1D ( SV* arg, char packtype ) {
       }
    
       n = av_len(array);
-   
+
+      if ( nelem != NULL )
+	*nelem = n;
+ 
       if (packtype=='f')
           SvGROW( work, sizeof(float)*(n+1) );  /* Pregrow for efficiency */
       if (packtype=='i')
@@ -231,10 +251,21 @@ T_FLOAT2DP
 
 [int2D/float2D would be typedef'd to int/float]
 
+pack2D_sz() is the same as pack2D except a pointer to two ints
+   can be supplied as third and fourth argument which will contain the
+   number of elements in the array on completion.
+   Will be set to -1 if this function was called with something
+   other than an array (eg a PDL).
+
 */
 
-
 void* pack2D ( SV* arg, char packtype ) {
+  int nx;
+  int ny;
+  return pack2D_sz( arg, packtype, &nx, &ny );
+}
+
+void* pack2D_sz ( SV* arg, char packtype, int *nx, int *ny ) {
 
    int iscalar;
    float scalar;
@@ -249,6 +280,10 @@ void* pack2D ( SV* arg, char packtype ) {
    double nval;
    int isref;
    STRLEN len;
+
+   if (nx != NULL) *nx = -1;
+   if (ny != NULL) *ny = -1;
+
 
    if (is_scalar_ref(arg))                 /* Scalar ref */
       return (void*) SvPV(SvRV(arg), len);
@@ -281,6 +316,7 @@ void* pack2D ( SV* arg, char packtype ) {
       }
    
       n = av_len(array);
+      if (nx != NULL) *nx = n;
       
       /* Pack array into string */
    
@@ -298,6 +334,9 @@ void* pack2D ( SV* arg, char packtype ) {
                nval = SvNV(*work2);               
             }
    
+
+            if (ny != NULL) *ny = m; 
+
             /* Pregrow storage for efficiency on first row - note assumes 
                array is rectangular but better than nothing  */
    
