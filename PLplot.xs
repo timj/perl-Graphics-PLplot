@@ -76,6 +76,11 @@ c_plbin( x, y, center )
   c_plbin( len, x, y, center);
 
 void
+c_plbop()
+ ALIAS:
+  plpage = 1
+
+void
 c_plbox(xopt, xtick, nxsub, yopt, ytick, nysub)
   char * xopt
   PLFLT xtick
@@ -84,21 +89,69 @@ c_plbox(xopt, xtick, nxsub, yopt, ytick, nysub)
   PLFLT ytick
   PLINT nysub
 
+void
+c_plbox3( xopt, xlabel, xtick, nxsub, yopt, ylabel, ytick, nysub, zopt, zlabel, ztick, nzsub)
+  char * xopt
+  char * xlabel
+  PLFLT xtick
+  PLINT nxsub
+  char * yopt
+  char * ylabel
+  PLFLT ytick
+  PLINT nysub
+  char * zopt
+  char * zlabel
+  PLFLT ztick
+  PLINT nzsub
+
+# ($wx, $wy, $window ) = plcalc_world( $rx, $ry );
 
 void
-c_plcol0( colindex )
- PLINT colindex
+c_plcalc_world( rx, ry)
+  PLFLT rx
+  PLFLT ry
+ PREINIT:
+  PLFLT wx;
+  PLFLT wy;
+  PLINT window;
+ PPCODE:
+  c_plcalc_world( rx, ry, &wx, &wy, &window );
+  XPUSHs( sv_2mortal(newSVnv(wx)));
+  XPUSHs( sv_2mortal(newSVnv(wy)));
+  XPUSHs( sv_2mortal(newSViv(window)));
 
-# plinit
 
 void
-c_plinit()
+c_plclear()
+
+
+void
+c_plcol0( color )
+  PLINT color
+ ALIAS:
+  plcol = 1
+
+void
+c_plcol1( color )
+  PLFLT color
+
+# plcont XXXXX
+
+# plcpstrm
+
+void
+c_plcpstrm( iplsr, flags)
+  PLINT iplsr
+  PLINT flags
+
 
 # plend
 
 void
 c_plend()
 
+void
+c_plend1()
 
 # plenv
 
@@ -110,6 +163,42 @@ c_plenv( xmin, xmax, ymin, ymax, just, axis )
   PLFLT ymax
   PLINT just
   PLINT axis
+
+void
+c_plenv0( xmin, xmax, ymin, ymax, just, axis )
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
+  PLINT just
+  PLINT axis
+
+void
+c_pleop()
+ ALIAS:
+  plclr = 1
+
+void
+c_plerrx( xmin, xmax, y )
+  PLFLT * xmin
+  PLFLT * xmax
+  PLFLT * y
+ PREINIT:
+  PLINT n = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plerrx( n, xmin, xmax, y );
+
+
+void
+c_plerry( x, ymin, ymax )
+  PLFLT * x
+  PLFLT * ymin
+  PLFLT * ymax
+ PREINIT:
+  PLINT n = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plerry( n, x, ymin, ymax );
+
 
 # plflush
 
@@ -142,6 +231,12 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
   PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plhist( len, data, datmin, datmax, nbin, oldwin);
+
+# plinit
+
+void
+c_plinit()
+
 
 
 # pllab
