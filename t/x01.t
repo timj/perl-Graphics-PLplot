@@ -47,6 +47,7 @@ print "# Plot 4\n";
 &plot3();
 
 sleep($sleep);
+plflush();
 plspause(0);
 plend();
 
