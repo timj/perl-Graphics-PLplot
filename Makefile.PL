@@ -15,7 +15,6 @@ WriteMakefile(
 	      VERSION_FROM => 'PLplot.pm',
 	      LIBS => [ $pllibs ],
 	      INC  => "$plinc",
-	      OPTIMIZE => '-Wall -O',
 	      OBJECT  => 'PLplot.o arrays.o',
 	      'dist'      => {'COMPRESS'=>'gzip -9f', 'SUFFIX' => 'gz',
 			      'ZIP'=>'/usr/bin/zip','ZIPFLAGS'=>'-rl'},
