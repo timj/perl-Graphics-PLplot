@@ -1,0 +1,15 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         Graphics-PLplot
+version:      0.03
+author:
+  - Tim Jenness, tjenness@cpan.org
+abstract:     Perl interface to PLplot graphics library
+license:      gpl
+version_from: PLplot.pm
+installdirs:  site
+requires:
+build_requires:
+  Test::More: 0
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17
