@@ -21,20 +21,23 @@
 use strict;
 use Test::More tests => 1;
 use Math::Trig qw/ pi /;
-require_ok("Graphics::PLPLOT");
+BEGIN {
+  use_ok("Graphics::PLPLOT");
+  Graphics::PLPLOT->import(qw/ :all /);
+}
 
-print "# Version: ". &Graphics::PLPLOT::plgver() ."\n";
+print "# Version: ". &plgver() ."\n";
 
-Graphics::PLPLOT::plssub( 2, 2);
-Graphics::PLPLOT::plsdev( "xwin" );
-Graphics::PLPLOT::plinit();
+plssub( 2, 2);
+plsdev( "xwin" );
+plinit();
 
 
 print "# Plot 1\n";
 &plot1( 6, 1, 0, 0.);
 
 print "# Plot 1 [plsyax]\n";
-Graphics::PLPLOT::plsyax( 5, 0 );
+plsyax( 5, 0 );
 &plot1( 1, 0.0014, 0, 0.0185);
 
 print "# Plot 3\n";
@@ -44,7 +47,7 @@ print "# Plot 4\n";
 &plot3();
 
 
-Graphics::PLPLOT::plend();
+plend();
 
 print "# Ending \n";
 
@@ -81,20 +84,20 @@ sub plot1 {
   # scaled separately (just = 0), and we just draw a labelled
   # box (axis = 0).
 
-  Graphics::PLPLOT::plcol0( 1 );
-  Graphics::PLPLOT::plenv( $xmin, $xmax, $ymin, $ymax, 0, 0);
-  Graphics::PLPLOT::plcol0( 2 );
-  Graphics::PLPLOT::pllab( "(x)", "(y)", "#frPLplot Example 1 - y=x#u2");
+  plcol0( 1 );
+  plenv( $xmin, $xmax, $ymin, $ymax, 0, 0);
+  plcol0( 2 );
+  pllab( "(x)", "(y)", "#frPLplot Example 1 - y=x#u2");
 
   # plot the data points
 
-  Graphics::PLPLOT::plcol0( 4 );
-  Graphics::PLPLOT::plpoin( \@xs, \@ys, 9 );
+  plcol0( 4 );
+  plpoin( \@xs, \@ys, 9 );
 
   # Draw the line through the data
 
-  Graphics::PLPLOT::plcol0( 3 );
-  Graphics::PLPLOT::plline( \@x, \@y );
+  plcol0( 3 );
+  plline( \@x, \@y );
 
 }
 
@@ -104,20 +107,20 @@ sub plot2 {
   # 10.0, and the range in Y is -0.4 to 2.0. The axes are scaled separately
   # (just = 0), and we draw a box with axes (axis = 1).
 
-  Graphics::PLPLOT::plcol0( 1 );
-  Graphics::PLPLOT::plenv( -2, 10, -0.4, 1.2, 0, 1);
-  Graphics::PLPLOT::plcol0( 2 );
-  Graphics::PLPLOT::pllab("(x)","sin(x)/x","#frPLplot Example 1 - Sinc Function");
+  plcol0( 1 );
+  plenv( -2, 10, -0.4, 1.2, 0, 1);
+  plcol0( 2 );
+  pllab("(x)","sin(x)/x","#frPLplot Example 1 - Sinc Function");
 
   # Fill up the arrays
   my @x = map { ($_ - 19.0) / 6.0 } (0..99);
   my @y = map { ($_ == 0 ? 1 : sin($_) / $_) } @x;
 
   # Draw the line
-  Graphics::PLPLOT::plcol0( 3 );
-  Graphics::PLPLOT::plwid( 2 );
-  Graphics::PLPLOT::plline( \@x, \@y );
-  Graphics::PLPLOT::plwid( 1 );
+  plcol0( 3 );
+  plwid( 2 );
+  plline( \@x, \@y );
+  plwid( 1 );
 
 }
 
@@ -129,35 +132,35 @@ sub plot3 {
 
   # For the final graph we wish to override the default tick intervals, and
   # so do not use plenv().
-  Graphics::PLPLOT::pladv (0);
+  pladv (0);
 
   # Use standard viewport, and define X range from 0 to 360 degrees, Y range
   # from -1.2 to 1.2.
 
-  Graphics::PLPLOT::plvsta ();
-  Graphics::PLPLOT::plwind (0.0, 360.0, -1.2, 1.2);
+  plvsta ();
+  plwind (0.0, 360.0, -1.2, 1.2);
 
   # Draw a box with ticks spaced 60 degrees apart in X, and 0.2 in Y.
 
-  Graphics::PLPLOT::plcol0 (1);
-  Graphics::PLPLOT::plbox ("bcnst", 60.0, 2, "bcnstv",0.2, 2);
+  plcol0 (1);
+  plbox ("bcnst", 60.0, 2, "bcnstv",0.2, 2);
 
   # Superimpose a dashed line grid, with 1.5 mm marks and spaces.
 
-  Graphics::PLPLOT::plstyl ( [$mark1], [$space1]);
-  Graphics::PLPLOT::plcol0 (2);
-  Graphics::PLPLOT::plbox ("g",30.0, 0, "g",0.2, 0);
+  plstyl ( [$mark1], [$space1]);
+  plcol0 (2);
+  plbox ("g",30.0, 0, "g",0.2, 0);
   # Clear styles
-  Graphics::PLPLOT::plstyl ([], []);
+  plstyl ([], []);
 
-  Graphics::PLPLOT::plcol0 (3);
-  Graphics::PLPLOT::pllab ("Angle (degrees)", "sine", 
+  plcol0 (3);
+  pllab ("Angle (degrees)", "sine", 
 			   "#frPLplot Example 1 - Sine function");
 
   my @x = map { 3.6 * $_ } (0..100);
   my @y = map { sin ($_ * pi / 180.0) } @x;
 
-  Graphics::PLPLOT::plcol0 (4);
-  Graphics::PLPLOT::plline (\@x, \@y);
+  plcol0 (4);
+  plline (\@x, \@y);
 
 }
