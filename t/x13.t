@@ -19,7 +19,7 @@
 #
 
 use strict;
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Math::Trig qw/ pi /;
 BEGIN {
   use_ok("Graphics::PLPLOT");
@@ -31,7 +31,9 @@ print "# Version: ". &plgver() ."\n";
 my @text = qw/ Maurice Geoffrey Alan Rafael Vince /;
 my @per  = ( 10, 32, 12, 30, 16 );
 
-plsdev( "xwin" );
+my $dev = "xwin";
+plsdev( $dev );
+is(plgdev, $dev, "Check device");
 plinit();
 
 plenv(0., 10., 0., 10., 1, -2);
