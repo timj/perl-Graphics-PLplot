@@ -60,7 +60,8 @@ Place,Suite 330, Boston, MA  02111-1307, USA
 TODO
 ----
 
-  + Remaining functions
+  + Last few remaining functions
+  + Add explicit documentation for perl-isms
 
 Changes
 -------
@@ -68,3 +69,7 @@ Changes
  v0.01 - initial test release to CPAN
 
  v0.02 - Add many new [easy] functions. Rename to Graphics::PLplot
+
+ v0.03 - + All the easy functions (scalar and 1D array functions) added.
+         + Also added (inefficient) support for plimag and plsurf3d
+         + 14 of the 20 PLplot examples now included
