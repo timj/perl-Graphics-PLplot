@@ -42,12 +42,6 @@ typedef PLINT PLSTRIPID;
 /* For 2D perl arrays */
 typedef PLFLT PLFLT2D;
 
-/* Some static storage for the options handling. Since we only need one set of
-   options at a time. Just allocate some memory. If we dynamically allocate
-   may need to worry about when to free this. */
-#define MAX_OPT_TAB   64
-static PLOptionTable options[MAX_OPT_TAB];
-
 
 /* Helper routine for packing string arrays */
 
@@ -1179,88 +1173,7 @@ plParseOpts( argv, mode )
   XPUSHs( newRV_noinc( (SV*)unpack1Dchar( argv, argv_size) ));
 
 
-# Takes hash list containing new options
-#  keys: opt, var, mode, syntax and desc
-# Put $name as leading argument. @notes might be a problem since
-# we do not want to free this memory. Interface may change.
-
-bool
-plMergeOpts( name, ... )
-  char * name
- PREINIT:
-  PLOptionTable * opt;
-  int i;
-  int nopts;
-  int argoff = 1;
-  SV ** elem;
-  HV * hash;
-  int len;
- CODE:
-  /* Check that we have enough space */
-  nopts = items - argoff; 
-  if (nopts > (MAX_OPT_TAB - 1) ) 
-    Perl_croak(aTHX_ "Can only support %d additional options, you asked for %d",
-	MAX_OPT_TAB, nopts);  
-
-  opt = options;
-
-  /* Loop over all the items in turn, populating the struct */
-  for ( i = 0; i < nopts; i++ ) {
-    int pos = argoff + i;
-    SV * arg = ST(argoff);
-
-    /* Reset everything */
-    opt->handler     = NULL;
-    opt->client_data = NULL;
-    opt->var         = NULL;
-    opt->mode        = 0;
-    opt->syntax      = NULL;
-    opt->desc        = NULL;
-
-    if (SvROK(arg) && SvTYPE(SvRV(arg))==SVt_PVHV) {
-
-       hash = (HV*) SvRV(arg);
-       elem = hv_fetch(hash,"mode",strlen("mode"),0);
-       if (elem != NULL ) opt->mode = SvIV( *elem );
-
-       elem = hv_fetch(hash,"opt",strlen("opt"),0);
-       if (elem != NULL ) opt->opt = SvPV_nolen( *elem );
-
-       elem = hv_fetch(hash,"desc",strlen("desc"),0);
-       if (elem != NULL ) opt->desc = SvPV_nolen( *elem );
-
-       elem = hv_fetch(hash,"syntax",strlen("syntax"),0);
-       if (elem != NULL ) opt->syntax = SvPV_nolen( *elem );
-
-	printf("Desc %s\n",opt->desc);
-
-    } else {
-       Perl_croak(aTHX_ "Options must be given as ref to hash");
-    }
-
-    /* Next slot */
-    opt++;
-  }
-  /* Terminate the structure */
-  opt->handler     = NULL;
-  opt->client_data = NULL;
-  opt->var         = NULL;
-  opt->mode        = 0;
-  opt->syntax      = NULL;
-  opt->desc        = NULL;
-
-  /* Store the options */
-  RETVAL = plMergeOpts( options, name, NULL );
-
-
-  /* 0 is good status and 1 is bad status so we need to convert to Perl good/bad */
-  if (RETVAL == 0 )  {
-    RETVAL = 1;
-  } else {
-    RETVAL = 0;
-  }
- OUTPUT:
-  RETVAL
+# plMergeOpts should be done by perl GetOpt::Long
 
 
 
