@@ -16,7 +16,7 @@ T_FLT2DARR
 	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
 T_1DCHARARR
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV)
-	    $var = pack1Dchar((AV*)SvRV($arg));
+	    $var = pack1Dchar_sz((AV*)SvRV($arg),&${var}_size);
 	else
 	    Perl_croak(aTHX_ \"$var is not an array reference\")
 T_STRIPINT
