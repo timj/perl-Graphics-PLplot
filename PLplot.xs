@@ -133,9 +133,10 @@ c_plbin( x, y, center )
   PLFLT * y
   PLINT center
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
  CODE:
-  c_plbin( len, x, y, center);
+  c_plbin( x_size, x, y, center);
 
 void
 c_plbop()
@@ -246,9 +247,11 @@ c_plerrx( xmin, xmax, y )
   PLFLT * xmax
   PLFLT * y
  PREINIT:
-  PLINT n = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT xmin_size;
+  PLINT xmax_size;
+  PLINT y_size;
  CODE:
-  c_plerrx( n, xmin, xmax, y );
+  c_plerrx( y_size, xmin, xmax, y );
 
 
 void
@@ -257,9 +260,11 @@ c_plerry( x, ymin, ymax )
   PLFLT * ymin
   PLFLT * ymax
  PREINIT:
-  PLINT n = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT ymin_size;
+  PLINT ymax_size;
  CODE:
-  c_plerry( n, x, ymin, ymax );
+  c_plerry( x_size, x, ymin, ymax );
 
 void
 c_plfamadv()
@@ -269,9 +274,10 @@ c_plfill( x, y )
   PLFLT * x
   PLFLT * y
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
  CODE:
-  c_plfill( len, x, y );
+  c_plfill( x_size, x, y );
 
 void
 c_plfill3( x, y, z )
@@ -279,9 +285,11 @@ c_plfill3( x, y, z )
   PLFLT * y
   PLFLT * z
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
+  PLINT z_size;
  CODE:
-  c_plfill3( len, x, y, z );
+  c_plfill3( x_size, x, y, z );
 
 
 # plflush
@@ -549,9 +557,9 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
   PLINT nbin
   PLINT oldwin
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT data_size;
  CODE:
-  c_plhist( len, data, datmin, datmax, nbin, oldwin);
+  c_plhist( data_size, data, datmin, datmax, nbin, oldwin);
 
 
 # plhls is now deprecated
@@ -629,9 +637,10 @@ c_plline( x, y )
   PLFLT * x
   PLFLT * y
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
  CODE:
-  c_plline( len, x, y );
+  c_plline( x_size, x, y );
 
 void
 c_plline3( x, y, z )
@@ -639,9 +648,11 @@ c_plline3( x, y, z )
   PLFLT * y
   PLFLT * z
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
+  PLINT z_size;
  CODE:
-  c_plline3( len, x, y, z );
+  c_plline3( x_size, x, y, z );
 
 void
 c_pllsty( input )
@@ -680,9 +691,10 @@ c_plpat( inc, del )
   PLINT * inc
   PLINT * del
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT inc_size;
+  PLINT del_size;
  CODE:
-  c_plpat( len, inc, del);
+  c_plpat( inc_size, inc, del);
 
 
 
@@ -694,9 +706,10 @@ c_plpoin( x, y, code )
   PLFLT * y
   PLINT code
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
  CODE:
-  c_plpoin( len, x, y, code);
+  c_plpoin( x_size, x, y, code);
 
 void
 c_plpoin3( x, y, z, code )
@@ -705,9 +718,11 @@ c_plpoin3( x, y, z, code )
   PLFLT * z
   PLINT code
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
+  PLINT z_size;
  CODE:
-  c_plpoin3( len, x, y, z, code);
+  c_plpoin3( x_size, x, y, z, code);
 
 void
 c_plpoly3( x, y, z, draw, ifcc )
@@ -717,9 +732,12 @@ c_plpoly3( x, y, z, draw, ifcc )
   PLINT * draw
   PLINT ifcc
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
+  PLINT z_size;
+  PLINT draw_size;
  CODE:
-  c_plpoly3( len, x, y, z, draw, ifcc);
+  c_plpoly3( x_size, x, y, z, draw, ifcc);
 
 void
 c_plprec( set, prec )
@@ -759,9 +777,11 @@ c_plscmap0( r, g, b )
   PLINT * g
   PLINT * b
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT r_size;
+  PLINT g_size;
+  PLINT b_size;
  CODE:
-  c_plscmap0( r, g, b, len );
+  c_plscmap0( r, g, b, r_size );
 
 void
 c_plscmap0n( ncol0 )
@@ -773,9 +793,11 @@ c_plscmap1( r, g, b )
   PLINT * g
   PLINT * b
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT r_size;
+  PLINT g_size;
+  PLINT b_size;
  CODE:
-  c_plscmap1( r, g, b, len );
+  c_plscmap1( r, g, b, r_size );
 
 # plscmap1l - need to allow rev to be an empty array. XXXXX
 
@@ -788,9 +810,13 @@ c_plscmap1l(itype, pos, coord1, coord2, coord3, rev)
   PLFLT * coord3
   PLINT * rev
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(1)) ) + 1;
+  PLINT pos_size;
+  PLINT coord1_size;
+  PLINT coord2_size;
+  PLINT coord3_size;
+  PLINT rev_size;
  CODE:
-  c_plscmap1l( itype, len, pos, coord1, coord2, coord3, rev);
+  c_plscmap1l( itype, pos_size, pos, coord1, coord2, coord3, rev);
 
 
 void
@@ -958,7 +984,9 @@ c_plstripc(xspec,yspec,xmin,xmax,xjump,ymin,ymax,xlpos,ylpos,y_ascl,acc,colbox, 
   char * laby
   char * labtop
  PREINIT:
-  int legline_size;
+  PLINT colline_size;
+  PLINT styline_size;
+  PLINT legline_size;
  CODE:
    c_plstripc( &RETVAL, xspec, yspec, xmin, xmax, xjump, ymin, ymax, xlpos, ylpos, (PLINT)y_ascl, (PLINT)acc, colbox, collab, colline, styline, legline, labx, laby, labtop);
  OUTPUT:
@@ -997,9 +1025,10 @@ c_plstyl( mark, space )
   PLINT * mark
   PLINT * space
  PREINIT:
-  PLINT nels = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT mark_size;
+  PLINT space_size;
  CODE:
-  c_plstyl( nels, mark, space );
+  c_plstyl( mark_size, mark, space );
 
 
 void
@@ -1035,9 +1064,10 @@ c_plsym( x, y, code )
   PLFLT * y
   PLINT code
  PREINIT:
-  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+  PLINT x_size;
+  PLINT y_size;
  CODE:
-  c_plsym( len, x, y, code);
+  c_plsym( x_size, x, y, code);
 
 void
 c_pltext()

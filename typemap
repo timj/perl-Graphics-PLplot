@@ -9,9 +9,11 @@ PLSTRIPID       T_STRIPINT
 INPUT
 
 T_FLTARRAY
-	$var = ($type)pack1D($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'));
+	if (1)
+	$var = ($type)pack1D_sz($arg,(sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'),&${var}_size);
 T_INTARRAY
-	$var = ($type)pack1D($arg,'i')
+	if (1)
+	$var = ($type)pack1D_sz($arg,'i',&${var}_size);
 T_FLT2DARR
 	$var = ($type)pack2D($arg, (sizeof(PLFLT)==sizeof(double) ? 'd' : 'f'))
 T_1DCHARARR

@@ -79,6 +79,14 @@ pack1D_sz() is the same as pack1D except a pointer to an int
    Will be set to -1 if this function was called with something
    other than an array (eg a PDL).
 
+   Note that to use this from a typemap you will need to fudge things
+   in the typemap file such that xsubpp puts the entry after the PREINIT
+   block (else you can't declare the _size variables.
+
+T_PACKEDINT
+    if (1)
+      $var = ($type)pack1D($arg,'d',${var}_size)
+
 */
 
 void* pack1D ( SV* arg, char packtype ) {
