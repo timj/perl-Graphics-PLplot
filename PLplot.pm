@@ -61,6 +61,7 @@ use base qw/ Exporter DynaLoader /;
 			   pleop
 			   plerrx
 			   plerry
+			   plfill
 			   plflush
 			   plfont
 			   plfontld
@@ -76,8 +77,10 @@ use base qw/ Exporter DynaLoader /;
 			   pljoin
 			   pllab
 			   plline
+			   pllsty
 			   plmtex
 			   plpoin
+			   plpsty
 			   plptex
 			   plschr
 			   plsdev
@@ -85,6 +88,7 @@ use base qw/ Exporter DynaLoader /;
 			   plstyl
 			   plsyax
 			   plsym
+			   plsvpa
 			   plvpor
 			   plvsta
 			   plwid

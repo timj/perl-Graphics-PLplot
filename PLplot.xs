@@ -199,6 +199,15 @@ c_plerry( x, ymin, ymax )
  CODE:
   c_plerry( n, x, ymin, ymax );
 
+void
+c_plfill( x, y )
+  PLFLT * x
+  PLFLT * y
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plfill( len, x, y );
+
 
 # plflush
 
@@ -346,6 +355,10 @@ c_plline( x, y )
  CODE:
   c_plline( len, x, y );
 
+void
+c_pllsty( input )
+  PLINT input
+
 
 # plmtex
 
@@ -368,6 +381,11 @@ c_plpoin( x, y, code )
   PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
  CODE:
   c_plpoin( len, x, y, code);
+
+
+void
+c_plpsty(n)
+  PLINT n
 
 # plptex
 
@@ -429,6 +447,12 @@ c_plsym( x, y, code )
  CODE:
   c_plsym( len, x, y, code);
 
+void
+c_plsvpa(xmin, xmax, ymin, ymax)
+  PLFLT xmin
+  PLFLT xmax
+  PLFLT ymin
+  PLFLT ymax
 
 void
 c_plvpor( xmin, xmax, ymin, ymax )
