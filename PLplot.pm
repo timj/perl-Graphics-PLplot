@@ -96,6 +96,7 @@ use base qw/ Exporter DynaLoader /;
 			   plgyax
 			   plgzax
 			   plhist
+			   plimage
 			   plinit
 			   pljoin
 			   pllab
@@ -163,12 +164,20 @@ use base qw/ Exporter DynaLoader /;
 			   plgDevs
 			   plClearOpts
 			   plResetOpts
+			   plParseOpts
 			   plSetUsage
 			   plOptUsage
 			   plgfile
 			   plsfile
 			   plgesc
 			   plGetCursor
+			   PARSE_FULL
+			   PARSE_QUIET
+			   PARSE_NODELETE
+			   PARSE_SHOWALL
+			   PARSE_NODASH
+			   PARSE_SKIP
+			   pl_Alloc2dGrid
 			   /],
 	       );
 
@@ -178,6 +187,38 @@ use base qw/ Exporter DynaLoader /;
 Exporter::export_tags('all');
 
 bootstrap Graphics::PLplot $VERSION;
+
+
+=head1 HELPER FUNCTIONS
+
+The following perl helper functions are also available:
+
+=over 4
+
+=item B<perl_Alloc2dGrid>
+
+Create a perl 2D array (technically an array of 1-D arrays)
+suitable for use in C<plimage>. Returns a reference
+to the initialised 2D array. All elements are set to 0.0.
+
+  $ref = pl_Alloc2dGrid( $nx, $ny );
+
+=cut
+
+sub pl_Alloc2dGrid ($$) {
+  # Create a 2D perl "array" and initialize with zeroes
+  my ($nx, $ny) = @_;
+  my @z = ();
+  for my $i ( 0 .. ($nx -1 ) ) {
+    $z[$i] = [];
+    for my $j ( 0.. ($ny - 1 ) ) {
+      $z[$i]->[$j] = 0.0;
+    }
+  }
+  return \@z;
+}
+
+=back
 
 =head1 EXAMPLES
 
