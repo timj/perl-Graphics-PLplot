@@ -6,24 +6,113 @@ Graphics::PLPLOT - Perl interface to the PLPLOT plotting library
 
 =head1 SYNOPSIS
 
-  use Graphics::Plot;
+  use Graphics::Plot qw/ :all /;
 
+  plsdev( "xwin" );
   plinit();
+  plcol0(1);
 
+  plenv( -1, 1, -1, 1, 1, -2 );
+  plline(\@x, \@y);
+
+  plend();
 
 =head1 DESCRIPTION
 
+This module provides a perl interface to the PLPLOT plotting library
+available from http://www.plplot.org. The interface is very similar
+to the C interface except that:
+
+ - Arrays are passed in by reference
+ - If the number of elements in an array are required by the C function
+   the perl interface calculates this automatically [eg plline]
+ - Return values are returned not supplied as arguments
 
 =cut
 
-use vars qw/ $VERSION /;
+use vars qw/ $VERSION %EXPORT_TAGS /;
 $VERSION = '0.01';
 
 require DynaLoader;
-use base qw/ DynaLoader /;
+require Exporter;
+use base qw/ Exporter DynaLoader /;
+
+# Setup export tags
+# Simple to generate from XS:
+# cat grep c_pl PLPLOT.xs | awk -F\( '{print $1}' | sort | uniq
+%EXPORT_TAGS = (
+		
+		'all'=>[qw/
+			   pladv
+			   plaxes
+			   plbin
+			   plbop
+			   plbox
+			   plbox3
+			   plcalc_world
+			   plclear
+			   plcol0
+			   plcol1
+			   plcpstrm
+			   plend
+			   plend1
+			   plenv
+			   plenv0
+			   pleop
+			   plerrx
+			   plerry
+			   plflush
+			   plfont
+			   plfontld
+			   plgver
+			   plhist
+			   plinit
+			   pljoin
+			   pllab
+			   plline
+			   plmtex
+			   plpoin
+			   plptex
+			   plschr
+			   plsdev
+			   plssub
+			   plstyl
+			   plsyax
+			   plsym
+			   plvpor
+			   plvsta
+			   plwid
+			   plwind
+			   /],
+	       );
+
+Exporter::export_tags('all');
 
 bootstrap Graphics::PLPLOT $VERSION;
 
+=head1 EXAMPLES
+
+This module is distributed with Perl versions of many of the C example
+files that are distributed as part of PLPLOT itself. They can be
+used to learn the Perl interface.
+
+=head1 TODO
+
+This module is not yet complete since only a subset of the PLPLOT
+functions are available. More will be added as I get time to implement
+them.
+
+=head1 SEE ALSO
+
+The L<PDL::Graphics::PLPLOT> module (distributed with L<PDL|PDL>
+is more suitable for plotting large data arrays. This module exists
+primarily for cases where a dependency on PDL is not desirable.
+
+The PLPLOT library is very similar to the PGPLOT library (see
+the L<PGPLOT|PGPLOT> module).
+
+The L<Starlink::AST|Starlink::AST> module provides a graphics
+interface to this PLPLOT module.
 
 =head1 AUTHOR
 
