@@ -247,6 +247,12 @@ c_plhist( data, datmin, datmax, nbin, oldwin )
 void
 c_plinit()
 
+void
+c_pljoin( x1, y1, x2, y2 )
+ PLFLT x1
+ PLFLT y1
+ PLFLT x2
+ PLFLT y2
 
 
 # pllab
@@ -269,6 +275,16 @@ c_plline( x, y )
  CODE:
   c_plline( len, x, y );
 
+
+# plmtex
+
+void
+c_plmtex( side, disp, pos, just, text )
+  char * side
+  PLFLT disp
+  PLFLT pos
+  PLFLT just
+  char * text
 
 # plpoin
 
