@@ -346,6 +346,19 @@ c_plsyax( digimax, digits )
   PLINT digimax
   PLINT digits
 
+# plpoin
+
+void
+c_plsym( x, y, code )
+  PLFLT * x
+  PLFLT * y
+  PLINT code
+ PREINIT:
+  PLINT len = av_len( (AV*)SvRV(ST(0)) ) + 1;
+ CODE:
+  c_plsym( len, x, y, code);
+
+
 void
 c_plvpor( xmin, xmax, ymin, ymax )
   PLFLT xmin
