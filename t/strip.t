@@ -19,7 +19,7 @@
 #
 
 use strict;
-use Test::More tests => 2;
+use Test::More tests => 3;
 use Math::Trig qw/ pi /;
 BEGIN {
   use_ok("Graphics::PLplot");
@@ -59,6 +59,8 @@ for my $i (0..50) {
 
 }
 
+# end immediately
+plspause(0);
 plend();
 
 print "# Ending \n";
