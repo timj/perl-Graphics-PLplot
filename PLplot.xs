@@ -1028,3 +1028,9 @@ c_plxormod( mode )
   RETVAL = status;
  OUTPUT:
   RETVAL
+
+### PRIVATE ROUTINES that should not be exported
+
+PLFLT
+plstrl( string )
+  char * string

@@ -158,6 +158,9 @@ use base qw/ Exporter DynaLoader /;
 			   /],
 	       );
 
+# plstrl is not exported since it is not part of the API but needed
+# by Starlink::AST. Do not make this part of the public API.
+
 Exporter::export_tags('all');
 
 bootstrap Graphics::PLplot $VERSION;
